@@ -34,6 +34,10 @@ public class payslip {
         return hours * rate;
     }
 
+    /**
+     * Uses tax class to calculate nett pay for given salary
+     * @return nettPay
+     */
     public double getNettPay(){
         tax t = new tax(this);
         return t.nettPay(this);

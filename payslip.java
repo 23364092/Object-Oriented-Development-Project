@@ -40,6 +40,17 @@ public class payslip {
      */
     public double getNettPay(){
         tax t = new tax(this);
-        return t.nettPay(this);
+        return t.calculateNettPay(this.getGrossPay());
+    }
+
+    @Override
+    public String toString(){
+        tax t = new tax(this);
+        return "Employee ID: " + employee_id + "\n" +
+                "Date: " + date + "\n" +
+                "Rate: €" + rate + "\n" +
+                "Hours: " + hours + "\n" +
+                "Gross Pay: " + String.format("€%.2f", this.getGrossPay()) + "\n"
+                + t.toString();
     }
 }

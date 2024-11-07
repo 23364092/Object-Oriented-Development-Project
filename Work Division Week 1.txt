@@ -1,0 +1,11 @@
+Work Division Week 1
+
+-- Ciaran - PayrollSystemMenu, PayrollSystem, Exception Class
+-- Kai - Payslip, PayslipSet, Deductions 
+-- Ryan - Web Scraper trying to get data from pdf of salary scales into a csv file and work on SalaryScale class
+-- Eoin - Part-time and Full-time classes
+
+
+-- Classes left to do :
+		HR
+		Admin

@@ -17,11 +17,11 @@ public class PayrollSystem {
         return e;
     }
 
-    public static boolean employeeCheck(String employeeId) {
+    public boolean employeeCheck(String employeeId) {
         boolean result = false;
 
         for (Employee e : employees){
-            String id = Employee.getEmployeeId(e);
+            String id = e.getEmployeeId();
             if (id.equals(employeeId)) {
                 result = true;
                 break;
@@ -31,9 +31,11 @@ public class PayrollSystem {
     }
 
     public void addEmployee(Employee employee){
-        Admin.addEmployee(employee);
+        employees.add(employee);
     }
 
+
+    //Wait until HR and Salary Scale class is done
     public void promoteEmployee(Employee employee){
         HR.promoteEmployee(employee);
     }

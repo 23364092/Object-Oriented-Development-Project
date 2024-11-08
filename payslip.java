@@ -1,16 +1,13 @@
-import java.time.LocalTime;
 import java.time.LocalDate;
 
 public class payslip {
     private int employee_id;
     private LocalDate date;
-    private double rate;
-    private double hours;
+    private double annualSalary;
 
-    public payslip(int employee_id, double rate, double hours, int day, int month, int year){
+    public payslip(int employee_id,double annualSalary, int day, int month, int year){
         this.employee_id = employee_id;
-        this.rate = rate;
-        this.hours = hours;
+        this.annualSalary = annualSalary;
         this.date = LocalDate.of(year, month, day);
     }
 
@@ -18,20 +15,12 @@ public class payslip {
         return employee_id;
     }
 
-    public double getHours() {
-        return hours;
-    }
-
-    public double getRate() {
-        return rate;
+    public double getAnnualSalary() {
+        return annualSalary;
     }
 
     public LocalDate getDate(){
         return date;
-    }
-
-    public double getGrossPay(){
-        return hours * rate;
     }
 
     /**
@@ -39,18 +28,16 @@ public class payslip {
      * @return nettPay
      */
     public double getNettPay(){
-        tax t = new tax(this);
-        return t.calculateNettPay(this.getGrossPay());
+        deductions d = new deductions(this);
+        return d.calculateNettPay(this.getAnnualSalary());
     }
 
     @Override
     public String toString(){
-        tax t = new tax(this);
+        deductions t = new deductions(this);
         return "Employee ID: " + employee_id + "\n" +
                 "Date: " + date + "\n" +
-                "Rate: €" + rate + "\n" +
-                "Hours: " + hours + "\n" +
-                "Gross Pay: " + String.format("€%.2f", this.getGrossPay()) + "\n"
+                "Salary: €" + annualSalary + "\n"
                 + t.toString();
     }
 }

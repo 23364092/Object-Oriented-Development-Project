@@ -1,10 +1,13 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 public class Employee {
     private String employeeId;
     private String name;
     private double salary;
     private int salaryScale;
     private String position;
-    private String dateOfEmployment;
+    private payslipSet payslips;
 
     public Employee(String employeeId, String name,String position, int salaryScale, String dateOfEmployment) {
         this.employeeId = employeeId;
@@ -16,6 +19,10 @@ public class Employee {
 
     public double getSalary(String position, int salaryScale) {
         return 2.0;//SalaryScale.getSalaryScaleForPoint(position, salaryScale);
+    }
+
+    public payslipSet getPayslipSet(){
+        return payslips;
     }
 
     public String getEmployeeId() {
@@ -34,10 +41,15 @@ public class Employee {
         return salary;
     }
 
-    public String toString() {
-            return "Employee ID: " + employeeId + "\n" +
-                    "Name: " + name + "\n" +
-                    "Position: " + position + "\n" +
-                    "Salary: " + salary;
-        }
+    public LocalDate getFirstPayslipDate(){
+        return payslips.getFirstPayslip().getDate();
     }
+
+    @Override
+    public String toString() {
+        return "Employee ID: " + employeeId + "\n" +
+                "Name: " + name + "\n" +
+                "Position: " + position + "\n" +
+                "Salary: " + salary;
+    }
+}

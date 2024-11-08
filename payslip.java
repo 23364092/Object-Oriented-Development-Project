@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class payslip {
+public class payslip implements Comparable<payslip>{
     private int employee_id;
     private LocalDate date;
     private double annualSalary;
@@ -39,5 +39,10 @@ public class payslip {
                 "Date: " + date + "\n" +
                 "Salary: €" + annualSalary + "\n"
                 + t.toString();
+    }
+
+    @Override
+    public int compareTo(payslip other){
+        return this.date.compareTo(other.date); //will be used to sort payslipSet by date
     }
 }

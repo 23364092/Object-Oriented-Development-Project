@@ -11,11 +11,11 @@ public class Employee {
         this.name = name;
         this.position = position;
         this.salary = getSalary(position, salaryScale);
-        this.dateOfEmployment = getDateOfEmployment(employeeId);
+        //this.dateOfEmployment = getDateOfEmployment(employeeId);
     }
 
     public double getSalary(String position, int salaryScale) {
-        return SalaryScale.getSalaryScaleForPoint(position, salaryScale);
+        return 2.0;//SalaryScale.getSalaryScaleForPoint(position, salaryScale);
     }
 
     public String getEmployeeId() {
@@ -35,10 +35,9 @@ public class Employee {
     }
 
     public String toString() {
-            return "Employee ID: " + employeeId +
-                    "\nName: " + name +
-                    "\nPosition: " + position +
-                    "\nSalary: " + salary;
+            return "Employee ID: " + employeeId + "\n" +
+                    "Name: " + name + "\n" +
+                    "Position: " + position + "\n" +
+                    "Salary: " + salary;
         }
     }
-}

@@ -6,6 +6,7 @@ public class PayRollSystemSimulation {
         throws IOException {
         PayrollSystem payroll = new PayrollSystem();
         PayrollSystemMenu menu = new PayrollSystemMenu();
+
         menu.run(payroll);
     }
 }

@@ -1,43 +1,63 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PayrollSystem {
     private ArrayList<Employee> employees;
+    private final String password = "0000";
 
     public PayrollSystem() {
         employees = new ArrayList<Employee>();
     }
 
-    public Employee[] getEmployees() {
-
-        Employee[] e = new Employee[employees.size()];
+    public Employee getEmployee(String employeeId) {
+        boolean breaker = false;
+        Employee employee = null;
 
         for (int i = 0; i < employees.size(); i++) {
-            e[i] = employees.get(i);
-        }
-        return e;
-    }
+                employee = employees.get(i);
+            if (employeeId.equals(employee.getEmployeeId())) {
+                breaker = true;
+            }
 
-    public boolean employeeCheck(String employeeId) {
-        boolean result = false;
-
-        for (Employee e : employees){
-            String id = e.getEmployeeId();
-            if (id.equals(employeeId)) {
-                result = true;
+            if (breaker == true) {
                 break;
             }
         }
-        return result;
+        return employee;
     }
 
-    public void addEmployee(Employee employee){
-        employees.add(employee);
+        public boolean employeeCheck (String employeeId){
+            boolean result = false;
+
+            for (Employee e : employees) {
+                String id = e.getEmployeeId();
+                if (id.equals(employeeId)) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public void addEmployee (Employee employee){
+            employees.add(employee);
+        }
+
+
+        //Wait until HR and Salary Scale class is done
+        public void promoteEmployee (String employeeId, String salaryScale){
+            //HR.promoteEmployee(employeeId, salaryScale);
+        }
+
+        public boolean passwordCheck (String otherPassword){
+            if (otherPassword.equals(password)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public String getEmployeeDetails (String employeeId){
+            return getEmployee(employeeId).toString();
+        }
     }
-
-
-    //Wait until HR and Salary Scale class is done
-    public void promoteEmployee(Employee employee){
-        HR.promoteEmployee(employee);
-    }
-}
-

@@ -1,11 +1,11 @@
 public class SalaryScale {
     private String role;
-    private int experienceLevel; // Experience level or grade
+    private int experienceLevel; 
     private double baseSalary;
     private double bonus;
     private double deductions;
 
-    // Constructor for SalaryScale
+   
     public SalaryScale(String role, int experienceLevel, double baseSalary, double bonus, double deductions) {
         this.role = role;
         this.experienceLevel = experienceLevel;
@@ -14,7 +14,7 @@ public class SalaryScale {
         this.deductions = deductions;
     }
 
-    // Getters and Setters
+   
     public String getRole() {
         return role;
     }
@@ -55,7 +55,7 @@ public class SalaryScale {
         this.deductions = deductions;
     }
 
-    // Method to calculate net salary
+ 
     public double calculateNetSalary() {
         return (baseSalary + bonus) - deductions;
     }

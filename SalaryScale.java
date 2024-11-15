@@ -1,42 +1,64 @@
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class SalaryScale {
-    private String role;
-    private double minSalary;
-    private double maxSalary;
-
-    // Constructor
-    public SalaryScale(String role, double minSalary, double maxSalary) {
-        this.role = role;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
-    }
-
-    // Display details
-    public void display() {
-        System.out.println("Role: " + role + ", Min: " + minSalary + ", Max: " + maxSalary);
-    }
-
-    // Read salary scales from a CSV file
-    public static List<SalaryScale> fromCSV(String fileName) {
-        List<SalaryScale> scales = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(fileName))) {
-            while (scanner.hasNextLine()) {
-                String[] parts = scanner.nextLine().split(",");
-                scales.add(new SalaryScale(parts[0], Double.parseDouble(parts[1]), Double.parseDouble(parts[2])));
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+    private class RoleSalary {
+        String role;
+        double salary;
+        RoleSalary(String role, double salary) {
+            this.role = role;
+            this.salary = salary;
         }
-        return scales;
+    }
+    private ArrayList<RoleSalary> salaryScale;
+    public SalaryScale() {
+        salaryScale = new ArrayList<>();
+        initializeScales();
     }
 
-    public static void main(String[] args) {
-        // Example usage
-        List<SalaryScale> scales = SalaryScale.fromCSV("salary_scales.csv");
-        for (SalaryScale scale : scales) {
-            scale.display();
+    // Initialize some sample salary scales
+    private void initializeScales() {
+        salaryScale.add(new RoleSalary("Admin", 30000.00));
+        salaryScale.add(new RoleSalary("HR", 25000.00));
+        salaryScale.add(new RoleSalary("Manager", 50000.00));
+        salaryScale.add(new RoleSalary("Developer", 45000.00));
+        salaryScale.add(new RoleSalary("Intern", 10000.00));
+    }
+
+    // Get the salary for a given role
+    public double getSalary(String role) {
+        for (RoleSalary rs : salaryScale) {
+            if (rs.role.equalsIgnoreCase(role)) {
+                return rs.salary;
+            }
+        }
+        return 0.0; // Return 0.0 if the role is not found
+    }
+
+    // Add or update a salary scale
+    public void addOrUpdateScale(String role, double salary) {
+        for (RoleSalary rs : salaryScale) {
+            if (rs.role.equalsIgnoreCase(role)) {
+                rs.salary = salary; // Update salary if role exists
+                return;
+            }
+        }
+        salaryScale.add(new RoleSalary(role, salary)); // Add new role if not found
+    }
+    // Remove a salary scale
+    public boolean removeScale(String role) {
+        for (int i = 0; i < salaryScale.size(); i++) {
+            if (salaryScale.get(i).role.equalsIgnoreCase(role)) {
+                salaryScale.remove(i);
+                return true;
+            }
+        }
+        return false; // Return false if the role is not found
+    }
+    // Display all salary scales
+    public void displayScales() {
+        System.out.println("Current Salary Scales:");
+        for (RoleSalary rs : salaryScale) {
+            System.out.println(rs.role + ": $" + rs.salary);
         }
     }
 }

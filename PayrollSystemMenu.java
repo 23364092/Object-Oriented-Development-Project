@@ -16,48 +16,62 @@ public class PayrollSystemMenu {
         boolean more = true;
 
         while (more) {
-            System.out.println("Input user type: E)mployee   H)uman Resources   A)dmin");
+            System.out.println("Input user type: E)mployee   H)uman Resources   A)dmin   Q)uit");
             String command = input.nextLine().toUpperCase();
 
+            if (command.equals("Q")) {
+                more = false;
+            }
+
             if (command.equals("A")) {
-                System.out.println("Input password: ");
-                String password = input.nextLine().toUpperCase();
 
-                if (payroll.passwordCheck(password) == true) {
-                    System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History A)dd Employee   Q)uit");
-                    command = input.nextLine().toUpperCase();
+                boolean adminMenu = true;
 
-                    if (command.equals("S")) {
-                        //System.out.println(payroll.getPaySlip(employeeId));
-                    } else if (command.equals("E")) {
-                        System.out.println(payroll.toString());
-                    } else if (command.equals("P")) {
-                        //System.out.println(payroll.getPayslipHistory(employeeId));
-                    } else if (command.equals("A")) {
-                        System.out.println("Input details of employee you would like to add");
+                while (adminMenu) {
+                    System.out.println("Input password: ");
+                    String password = input.nextLine().toUpperCase();
 
-                        System.out.println("Enter Employee Id: ");
-                        String newEmployeeId = input.nextLine();
+                    if (payroll.passwordCheck(password) == true) {
+                        System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   A)dd Employee   R)eturn all Employees   Q)uit");
+                        command = input.nextLine().toUpperCase();
 
-                        System.out.println("Enter Employee Name: ");
-                        String newEmployeeName = input.nextLine();
+                        if (command.equals("S")) {
+                            //System.out.println(payroll.getPaySlip(employeeId));
+                        } else if (command.equals("E")) {
+                            System.out.println(payroll.toString());
+                        } else if (command.equals("P")) {
+                            //System.out.println(payroll.getPayslipHistory(employeeId));
+                        } else if (command.equals("A")) {
+                            System.out.println("Input details of employee you would like to add");
 
-                        System.out.println("Enter Employee Position: ");
-                        String newEmployeePosition = input.nextLine();
+                            System.out.println("Enter Employee Id: ");
+                            String newEmployeeId = input.nextLine();
 
-                        System.out.println("Enter Employee Salary Scale: ");
-                        int newSalaryScale = Integer.parseInt(input.nextLine());
+                            System.out.println("Enter Employee Name: ");
+                            String newEmployeeName = input.nextLine();
 
-                        System.out.println("Enter Date Of Employment: ");
-                        String newDateOfEmployment = input.nextLine();
+                            System.out.println("Enter Employee Position: ");
+                            String newEmployeePosition = input.nextLine();
 
-                        Employee newEmployee = new Employee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment);
+                            System.out.println("Enter Employee Salary Scale: ");
+                            int newSalaryScale = Integer.parseInt(input.nextLine());
 
-                        payroll.addEmployee(newEmployee);
+                            System.out.println("Enter Date Of Employment: ");
+                            String newDateOfEmployment = input.nextLine();
+
+                            Employee newEmployee = new Employee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment);
+
+                            payroll.addEmployee(newEmployee);
 
 
-                    } else if (command.equals("Q")) {
-                        more = false;
+                        } else if (command.equals("R")) {
+                            System.out.println(payroll.getEmployees());
+
+                        } else if (command.equals("Q")) {
+                            adminMenu = false;
+                        }
+                    }else {
+                        adminMenu = false;
                     }
                 }
             }
@@ -69,17 +83,22 @@ public class PayrollSystemMenu {
 
                 if (payroll.employeeCheck(employeeId)) {
                     if (command.equals("E")) {
-                        System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   Q)uit");
-                        command = input.nextLine().toUpperCase();
 
-                        if (command.equals("S")) {
-                            //System.out.println(payroll.getPaySlip(employeeId));
-                        } else if (command.equals("E")) {
-                            System.out.println(payroll.getEmployeeDetails(employeeId));
-                        } else if (command.equals("P")) {
-                            //System.out.println(payroll.getPayslipHistory(employeeId));
-                        } else if (command.equals("Q")) {
-                            more = false;
+                        boolean employeeMenu = true;
+
+                        while (employeeMenu) {
+                            System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   Q)uit");
+                            command = input.nextLine().toUpperCase();
+
+                            if (command.equals("S")) {
+                                //System.out.println(payroll.getPaySlip(employeeId));
+                            } else if (command.equals("E")) {
+                                System.out.println(payroll.getEmployeeDetails(employeeId));
+                            } else if (command.equals("P")) {
+                                //System.out.println(payroll.getPayslipHistory(employeeId));
+                            } else if (command.equals("Q")) {
+                                employeeMenu = false;
+                            }
                         }
                     } else if (command.equals("H")) {
 

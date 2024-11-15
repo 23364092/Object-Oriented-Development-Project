@@ -9,6 +9,10 @@ public class PayrollSystem {
         employees = new ArrayList<Employee>();
     }
 
+    public String getEmployees(){
+        return employees.toString();
+    }
+
     public Employee getEmployee(String employeeId) {
         boolean breaker = false;
         Employee employee = null;

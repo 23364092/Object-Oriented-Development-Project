@@ -1,74 +1,42 @@
+import java.io.*;
+import java.util.*;
+
 public class SalaryScale {
     private String role;
-    private int experienceLevel; 
-    private double baseSalary;
-    private double bonus;
-    private double deductions;
+    private double minSalary;
+    private double maxSalary;
 
-   
-    public SalaryScale(String role, int experienceLevel, double baseSalary, double bonus, double deductions) {
+    // Constructor
+    public SalaryScale(String role, double minSalary, double maxSalary) {
         this.role = role;
-        this.experienceLevel = experienceLevel;
-        this.baseSalary = baseSalary;
-        this.bonus = bonus;
-        this.deductions = deductions;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
     }
 
-   
-    public String getRole() {
-        return role;
+    // Display details
+    public void display() {
+        System.out.println("Role: " + role + ", Min: " + minSalary + ", Max: " + maxSalary);
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    // Read salary scales from a CSV file
+    public static List<SalaryScale> fromCSV(String fileName) {
+        List<SalaryScale> scales = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                String[] parts = scanner.nextLine().split(",");
+                scales.add(new SalaryScale(parts[0], Double.parseDouble(parts[1]), Double.parseDouble(parts[2])));
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return scales;
     }
 
-    public int getExperienceLevel() {
-        return experienceLevel;
-    }
-
-    public void setExperienceLevel(int experienceLevel) {
-        this.experienceLevel = experienceLevel;
-    }
-
-    public double getBaseSalary() {
-        return baseSalary;
-    }
-
-    public void setBaseSalary(double baseSalary) {
-        this.baseSalary = baseSalary;
-    }
-
-    public double getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(double bonus) {
-        this.bonus = bonus;
-    }
-
-    public double getDeductions() {
-        return deductions;
-    }
-
-    public void setDeductions(double deductions) {
-        this.deductions = deductions;
-    }
-
- 
-    public double calculateNetSalary() {
-        return (baseSalary + bonus) - deductions;
-    }
-
-    @Override
-    public String toString() {
-        return "SalaryScale{" +
-                "role='" + role + '\'' +
-                ", experienceLevel=" + experienceLevel +
-                ", baseSalary=" + baseSalary +
-                ", bonus=" + bonus +
-                ", deductions=" + deductions +
-                ", netSalary=" + calculateNetSalary() +
-                '}';
+    public static void main(String[] args) {
+        // Example usage
+        List<SalaryScale> scales = SalaryScale.fromCSV("salary_scales.csv");
+        for (SalaryScale scale : scales) {
+            scale.display();
+        }
     }
 }

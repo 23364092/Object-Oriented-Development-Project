@@ -1,64 +1,55 @@
 import java.util.ArrayList;
 
 public class SalaryScale {
-    private class RoleSalary {
-        String role;
-        double salary;
-        RoleSalary(String role, double salary) {
-            this.role = role;
-            this.salary = salary;
-        }
-    }
-    private ArrayList<RoleSalary> salaryScale;
+    private ArrayList<SalaryEntry> salaryEntries;
+
     public SalaryScale() {
-        salaryScale = new ArrayList<>();
-        initializeScales();
+        salaryEntries = new ArrayList<>();
     }
 
-    // Initialize some sample salary scales
-    private void initializeScales() {
-        salaryScale.add(new RoleSalary("Admin", 30000.00));
-        salaryScale.add(new RoleSalary("HR", 25000.00));
-        salaryScale.add(new RoleSalary("Manager", 50000.00));
-        salaryScale.add(new RoleSalary("Developer", 45000.00));
-        salaryScale.add(new RoleSalary("Intern", 10000.00));
+    public void addSalaryScale(String position, int scale, double salary) {
+        salaryEntries.add(new SalaryEntry(position, scale, salary));
     }
 
-    // Get the salary for a given role
-    public double getSalary(String role) {
-        for (RoleSalary rs : salaryScale) {
-            if (rs.role.equalsIgnoreCase(role)) {
-                return rs.salary;
+    public double getSalary(String position, int scale) {
+        for (SalaryEntry entry : salaryEntries) {
+            if (entry.getPosition().equalsIgnoreCase(position) && entry.getScale() == scale) {
+                return entry.getSalary();
             }
         }
-        return 0.0; // Return 0.0 if the role is not found
+        return 0.0;
     }
 
-    // Add or update a salary scale
-    public void addOrUpdateScale(String role, double salary) {
-        for (RoleSalary rs : salaryScale) {
-            if (rs.role.equalsIgnoreCase(role)) {
-                rs.salary = salary; // Update salary if role exists
-                return;
-            }
-        }
-        salaryScale.add(new RoleSalary(role, salary)); // Add new role if not found
-    }
-    // Remove a salary scale
-    public boolean removeScale(String role) {
-        for (int i = 0; i < salaryScale.size(); i++) {
-            if (salaryScale.get(i).role.equalsIgnoreCase(role)) {
-                salaryScale.remove(i);
+    public boolean hasSalaryScale(String position, int scale) {
+        for (SalaryEntry entry : salaryEntries) {
+            if (entry.getPosition().equalsIgnoreCase(position) && entry.getScale() == scale) {
                 return true;
             }
         }
-        return false; // Return false if the role is not found
+        return false;
     }
-    // Display all salary scales
-    public void displayScales() {
-        System.out.println("Current Salary Scales:");
-        for (RoleSalary rs : salaryScale) {
-            System.out.println(rs.role + ": $" + rs.salary);
+
+    private static class SalaryEntry {
+        private String position;
+        private int scale;
+        private double salary;
+
+        public SalaryEntry(String position, int scale, double salary) {
+            this.position = position;
+            this.scale = scale;
+            this.salary = salary;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public int getScale() {
+            return scale;
+        }
+
+        public double getSalary() {
+            return salary;
         }
     }
 }

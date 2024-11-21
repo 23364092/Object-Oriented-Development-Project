@@ -11,6 +11,11 @@ public class PayrollSystem {
         employees = new ArrayList<Employee>();
     }
 
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+
     public Employee getEmployee(String employeeId) {
         for (Employee employee : employees) {
             if (employee.getEmployeeId().equals(employeeId)){
@@ -36,35 +41,14 @@ public class PayrollSystem {
         employees.add(employee);
     }
 
-    public void readCSVFile() {
-        try (Scanner input = new Scanner(new File("src/payslip.csv"))) {
-            String header = input.nextLine();
-            while (input.hasNextLine()) {
-                String[] tokens = input.nextLine().split(",");
-                if (tokens.length == 5) {
-                    String employeeId = tokens[0].trim();
-                    double salary = Double.parseDouble(tokens[1].trim());
-                    int year = Integer.parseInt(tokens[2].trim());
-                    int month = Integer.parseInt(tokens[3].trim());
-                    int day = Integer.parseInt(tokens[4].trim());
+    public void populatePayslips(){
+        CSVReaderPayslip reader = new CSVReaderPayslip();
+        reader.readPayslipsFromCSV(this);
+    }
 
-                    Payslip payslip = new Payslip(employeeId, salary, year, month, day);
-
-                    Employee employee = getEmployee(employeeId);
-                    if (employee != null) {
-                        employee.getPayslipSet().addPayslip(payslip);
-                    } else {
-                        System.err.println("Warning: No employee found with ID " + employeeId);
-                    }
-                } else {
-                    System.err.println("Warning: Invalid line format in CSV.");
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("Error: File not found.");
-        } catch (NumberFormatException e) {
-            System.err.println("Error: Invalid number format in CSV.");
-        }
+    public void writePayslips(){
+        CSVWriterPayslip writer = new CSVWriterPayslip();
+        writer.writePayslipsToCSV(this);
     }
 
     public boolean passwordCheck(String otherPassword){

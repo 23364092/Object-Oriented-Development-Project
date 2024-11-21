@@ -36,8 +36,8 @@ public class PayrollSystem {
         employees.add(employee);
     }
 
-    public void readCSVFile(String filename) {
-        try (Scanner input = new Scanner(new File(filename))) {
+    public void readCSVFile() {
+        try (Scanner input = new Scanner(new File("src/payslip.csv"))) {
             String header = input.nextLine();
             while (input.hasNextLine()) {
                 String[] tokens = input.nextLine().split(",");

@@ -27,7 +27,7 @@ public class CSVReaderPayslip {
                     // Find the corresponding Employee in PayrollSystem
                     Employee employee = payrollSystem.getEmployee(employeeId);
                     if (employee != null) {
-                        // Add the Payslip to the Employee's PayslipSet
+                        // Add the Payslip to the Employee's PayslipSets
                         employee.getPayslipSet().addPayslip(payslip);
                     } else {
                         System.err.println("Warning: No employee found with ID " + employeeId);

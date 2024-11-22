@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class SalaryScaleReader {
-    private String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\SalaryScale";
+    private String filePath = "src/SalaryScale";
     private double salary = -1;
     private String line;
 

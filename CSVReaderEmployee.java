@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class CSVReaderEmployee {
-    String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\Employees.csv";
+    String filePath = "src/Employees.csv";
 
     //Constructor for creating reader object
     public CSVReaderEmployee() {

@@ -31,6 +31,7 @@ public class CSVReaderEmployee {
                 //Then add each employee object created to the payroll system employees array
                 payrollSystem.addEmployee(new Employee(employeeId, name, position, salaryScale, dateOfEmployment));
             }
+            payrollSystem.populatePayslips();
         } catch (IOException e) {
             //Throw an error if the file cant be read properly
             System.err.println("Error reading the csv file");

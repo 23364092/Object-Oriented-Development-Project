@@ -43,8 +43,8 @@ public class Employee {
         return salary;
     }
 
-    public LocalDate getFirstPayslipDate() {
-        return payslips.getFirstPayslip().getDate();
+    public Payslip getFirstPayslip() {
+        return payslips.getRecentPayslip();
     }
 
     public void printAllPayslips() {

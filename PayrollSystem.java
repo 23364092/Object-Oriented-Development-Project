@@ -9,11 +9,10 @@ public class PayrollSystem {
 
     public PayrollSystem() {
         employees = new ArrayList<Employee>();
-        populatePayslips();
     }
 
-    public String getEmployees(){
-        return employees.toString();
+    public ArrayList<Employee> getEmployees() {
+        return employees;
     }
 
 

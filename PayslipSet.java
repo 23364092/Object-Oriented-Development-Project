@@ -15,5 +15,5 @@ public class PayslipSet {
 
     public ArrayList<Payslip> getPayslips(){ return payslips; }
 
-    public Payslip getFirstPayslip(){ return payslips.getFirst(); }
+    public Payslip getRecentPayslip(){ return payslips.getLast(); }
 }

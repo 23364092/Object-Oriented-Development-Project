@@ -94,11 +94,11 @@ public class PayrollSystemMenu {
                             command = input.nextLine().toUpperCase();
 
                             if (command.equals("S")) {
-                                //System.out.println(payroll.getPaySlip(employeeId));
+                                System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
                             } else if (command.equals("E")) {
                                 System.out.println(payroll.getEmployeeDetails(employeeId));
                             } else if (command.equals("P")) {
-                                //System.out.println(payroll.getPayslipHistory(employeeId));
+                                payroll.getEmployee(employeeId).printAllPayslips();
                             } else if (command.equals("Q")) {
                                 employeeMenu = false;
                             }

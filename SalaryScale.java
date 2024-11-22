@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class SalaryScale {
     private ArrayList<SalaryEntry> salaryEntries;
+    // List to store all salary entries
 
     public SalaryScale() {
         salaryEntries = new ArrayList<>();

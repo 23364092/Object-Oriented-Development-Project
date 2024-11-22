@@ -4,18 +4,21 @@ import java.io.IOException;
 public class PayrollSystemMenu {
 
     private Scanner input;
-
+    private CSVReaderEmployee employeeReader = new CSVReaderEmployee();
 
     public PayrollSystemMenu() {
         input = new Scanner(System.in);
+
     }
 
     public void run(PayrollSystem payroll)
             throws IOException {
 
+        employeeReader.readEmployeesFromCSV(payroll);
         boolean more = true;
 
         while (more) {
+
             System.out.println("Input user type: E)mployee   H)uman Resources   A)dmin   Q)uit");
             String command = input.nextLine().toUpperCase();
 

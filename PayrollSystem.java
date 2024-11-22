@@ -1,69 +1,66 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class PayrollSystem {
-    private ArrayList<Employee> employees;
+    protected ArrayList<Employee> employees;
     private final String password = "0000";
 
     public PayrollSystem() {
         employees = new ArrayList<Employee>();
     }
 
-    public ArrayList<Employee> getEmployees() {
-        return employees;
+    public String getEmployees(){
+        return employees.toString();
     }
-
 
     public Employee getEmployee(String employeeId) {
-        for (Employee employee : employees) {
-            if (employee.getEmployeeId().equals(employeeId)){
-                return employee;
-            }
-        }
-        return null;
-    }
+        boolean breaker = false;
+        Employee employee = null;
 
-    public boolean employeeCheck(String employeeId){
-        boolean result = false;
-        for (Employee e : employees) {
-            String id = e.getEmployeeId();
-            if (id.equals(employeeId)) {
-                result = true;
+        for (int i = 0; i < employees.size(); i++) {
+                employee = employees.get(i);
+            if (employeeId.equals(employee.getEmployeeId())) {
+                breaker = true;
+            }
+
+            if (breaker == true) {
                 break;
             }
         }
-        return result;
+        return employee;
     }
 
-    public void addEmployee(Employee employee){
-        employees.add(employee);
-    }
+        public boolean employeeCheck (String employeeId){
+            boolean result = false;
 
-    public void populatePayslips(){
-        CSVReaderPayslip reader = new CSVReaderPayslip();
-        reader.readPayslipsFromCSV(this);
-    }
-
-    public void writePayslips(){
-        CSVWriterPayslip writer = new CSVWriterPayslip();
-        writer.writePayslipsToCSV(this);
-    }
-
-    public boolean passwordCheck(String otherPassword){
-        return otherPassword.equals(password);
-    }
-
-    public StringBuilder getEmployeeIds(){
-        StringBuilder s = new StringBuilder();
-        for (Employee e : employees){
-            s.append(e.getEmployeeId()).append("\n");
+            for (Employee e : employees) {
+                String id = e.getEmployeeId();
+                if (id.equals(employeeId)) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
         }
-        return s;
-    }
 
-    public String getEmployeeDetails(String employeeId){
-        return getEmployee(employeeId).toString();
+        public void addEmployee (Employee employee){
+            employees.add(employee);
+        }
+
+
+        //Wait until HR and Salary Scale class is done
+        public void promoteEmployee (String employeeId, String salaryScale){
+            //HR.promoteEmployee(employeeId, salaryScale);
+        }
+
+        public boolean passwordCheck (String otherPassword){
+            if (otherPassword.equals(password)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public String getEmployeeDetails (String employeeId){
+            return getEmployee(employeeId).toString();
+        }
     }
-}

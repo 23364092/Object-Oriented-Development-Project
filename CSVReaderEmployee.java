@@ -5,14 +5,14 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class CSVReaderEmployee {
-    String filePath = "Object-Oriented-Development-Project\\Project\\src\\Employees.csv";
+    String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\Employees.csv";
 
     //Constructor for creating reader object
     public CSVReaderEmployee() {
     }
 
     //Read from csv method with no argument because path is already set and no return type becuse we dont need to return anything
-    public void readEmployeesFromCSV() {
+    public void readEmployeesFromCSV(PayrollSystem payrollSystem) {
         String line;
 
         //br.readLine() skips the first line ie.header then starts reading the data with the while loop
@@ -29,7 +29,7 @@ public class CSVReaderEmployee {
                 String dateOfEmployment = data[4].trim();
 
                 //Then add each employee object created to the payroll system employees array
-                PayrollSystem.employees.add(new Employee(employeeId, name, position, salaryScale, dateOfEmployment));
+                payrollSystem.addEmployee(new Employee(employeeId, name, position, salaryScale, dateOfEmployment));
             }
         } catch (IOException e) {
             //Throw an error if the file cant be read properly

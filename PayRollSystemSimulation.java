@@ -6,7 +6,9 @@ public class PayRollSystemSimulation {
         throws IOException {
         PayrollSystem payroll = new PayrollSystem();
         PayrollSystemMenu menu = new PayrollSystemMenu();
+        CSVReaderEmployee reader = new CSVReaderEmployee();
 
         menu.run(payroll);
+
     }
 }

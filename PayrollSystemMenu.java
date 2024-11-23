@@ -42,7 +42,7 @@ public class PayrollSystemMenu {
 
                         while (adminMenu) {
                             System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   A)dd Employee   R)eturn all Employees   Q)uit");
-                            command= input.nextLine().toUpperCase();
+                            command = input.nextLine().toUpperCase();
 
                             if (command.equals("S")) {
                                 System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
@@ -91,7 +91,7 @@ public class PayrollSystemMenu {
 
                 if (payroll.employeeCheck(employeeId)) {
                     if (command.equals("E")) {
-                        //if (payroll.getContractType(employeeId) = "FULL-TIME") {
+                        if (payroll.getContractType(employeeId) == "FULL-TIME") {
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
@@ -108,11 +108,11 @@ public class PayrollSystemMenu {
                                     employeeMenu = false;
                                 }
                             }
-                        } //else if (payroll.getContractType(employeeId) = "PART-TIME") {
+                        } else if (payroll.getContractType(employeeId) == "PART-TIME") {
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
-                                System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   S)ubmit Claim   Q)uit");
+                                System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   SU)bmit Claim   Q)uit");
                                 command = input.nextLine().toUpperCase();
 
                                 if (command.equals("S")) {
@@ -121,20 +121,23 @@ public class PayrollSystemMenu {
                                     System.out.println(payroll.getEmployeeDetails(employeeId));
                                 } else if (command.equals("P")) {
                                     payroll.getEmployee(employeeId).printAllPayslips();
-                                } else if (command.equals("S")) {
+                                } else if (command.equals("SU")) {
                                     //Check date on system. If its second friday of month or gone past then this function isnt possible
+                                    boolean result = payroll.fridayCheck();
 
-                                    System.out.println("Input hours worked this month: ");
-                                    int hoursWorked = Integer.parseInt(input.nextLine());
+                                    if (result) {
+                                        System.out.println("Input hours worked this month: ");
+                                        int hoursWorked = Integer.parseInt(input.nextLine());
 
-                                    //payroll.submitPayClaim(hoursWorked);
+                                        //payroll.submitPayClaim(hoursWorked);
+                                    }
                                 } else if (command.equals("Q")) {
                                     employeeMenu = false;
                                 }
                             }
 
                         }
-                    }else if (command.equals("H")) {
+                    } else if (command.equals("H")) {
 
                         System.out.println("Input password: ");
                         password = input.nextLine();
@@ -154,7 +157,7 @@ public class PayrollSystemMenu {
                                 } else if (command.equals("P")) {
                                     payroll.getEmployee(employeeId).printAllPayslips();
                                 } else if (command.equals("Q")) {
-                                    more = false;
+                                    hrMenu = false;
                                 } else if (command.equals("PR")) {
                                     System.out.println("Input Employee Id that you would like to promote");
                                     String promotionId = input.nextLine().toUpperCase();
@@ -180,4 +183,6 @@ public class PayrollSystemMenu {
                 }
             }
         }
+    }
+}
 

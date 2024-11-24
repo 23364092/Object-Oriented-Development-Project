@@ -95,6 +95,22 @@ public class PayrollSystemMenu {
                 if (payroll.employeeCheck(employeeId)) {
                     if (command.equals("E")) {
                         if (payroll.getEmployee(employeeId).getContractType().equals("FULL-TIME")) {
+                            FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(employeeId);
+
+                            if (payroll.getEmployee(employeeId).getPromotionOffer()) {
+                                System.out.println("You have received a promotion offer");
+                                System.out.println(employee.promotionString());
+
+                                System.out.println("Would you like to accept new promotion : Y)es   N)o");
+                                command = input.nextLine();
+
+                                if (command.equals("Y")) {
+                                    employee.permPromoteEmployee();
+                                    employee.setPromotionOffer(false);
+                                } else if (command.equals("N")) {
+                                    employee.setPromotionOffer(false);
+                                }
+                            }
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
@@ -112,6 +128,22 @@ public class PayrollSystemMenu {
                                 }
                             }
                         } else if (payroll.getEmployee(employeeId).getContractType().equals("PART-TIME")) {
+                            PartTimeEmployee employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
+
+                            if (payroll.getEmployee(employeeId).getPromotionOffer()) {
+                                System.out.println("You have received a promotion offer");
+                                System.out.println(employee.promotionString());
+
+                                System.out.println("Would you like to accept new promotion : Y)es   N)o");
+                                command = input.nextLine();
+
+                                if (command.equals("Y")) {
+                                    employee.permPromoteEmployee();
+                                    employee.setPromotionOffer(false);
+                                } else if (command.equals("N")) {
+                                    employee.setPromotionOffer(false);
+                                }
+                            }
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
@@ -162,19 +194,27 @@ public class PayrollSystemMenu {
                                 } else if (command.equals("Q")) {
                                     hrMenu = false;
                                 } else if (command.equals("PR")) {
+
                                     System.out.println("Input Employee Id that you would like to promote");
                                     String promotionId = input.nextLine().toUpperCase();
 
-
                                     // Print out how long the employee has been a part of the system also
                                     System.out.println("Input next Salary Scale you would like the employee to be promoted to");
-                                    String salaryScale = input.nextLine().toUpperCase();
+                                    int salaryScale = Integer.parseInt(input.nextLine());
 
                                     System.out.println("Would you like to confirm this promotion: Y)es or N)o");
                                     command = input.nextLine().toUpperCase();
 
                                     if (command.equals("Y")) {
-                                        payroll.promoteEmployee(employeeId, salaryScale);
+                                        if (payroll.getEmployee(employeeId).getContractType().equals("FULL-TIME")) {
+                                            FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(employeeId);
+                                            employee.setPromotionOffer(true);
+                                            employee.tempPromoteEmployee(salaryScale);
+                                        } else if (payroll.getEmployee(employeeId).getContractType().equals("PART-TIME")) {
+                                            PartTimeEmployee employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
+                                            employee.setPromotionOffer(true);
+                                            employee.tempPromoteEmployee(salaryScale);
+                                        }
                                         System.out.println("Promotion Offer has been sent to: " + payroll.getEmployee(promotionId).getName());
                                     } else if (command.equals("N")) {
                                         System.out.println("Promotion Offer has been cancelled.");

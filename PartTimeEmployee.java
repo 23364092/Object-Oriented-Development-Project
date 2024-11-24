@@ -1,24 +1,43 @@
 public class PartTimeEmployee extends Employee {
-        private double hourlyRate;
+    private double hourlyRate;
+    private double newHourlyRate;
 
-        public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
-            super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);
-            this.hourlyRate = getHourlyRate(position, salaryScale);
-        }
+    public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
+        super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);
+        this.hourlyRate = getHourlyRate(position, salaryScale);
+    }
 
-        public double getHourlyRate(String position, int salaryScale){
-            return reader.getSalaryScaleForPoint(position, salaryScale);
-        }
+    public double getHourlyRate(String position, int salaryScale){
+        return reader.getSalaryScaleForPoint(position, salaryScale);
+    }
 
-        public double calculateGrossPay(double hoursWorked) {
-            return hoursWorked * hourlyRate;
-        }
+    @Override
+    public void permPromoteEmployee() {
+        super.permPromoteEmployee();
+        hourlyRate = newHourlyRate;
 
-        @Override
-        public String toString() {
-            return "Part Time Employee" + "\n" + super.toString() +
-                    "Hourly Rate: " + hourlyRate;
-        }
+    }
+
+    public void tempPromoteEmployee(int salaryScale) {
+        newHourlyRate = reader.getNewSalary(getPosition(), salaryScale);
+    }
+
+
+    public double calculateGrossPay(double hoursWorked) {
+        return hoursWorked * hourlyRate;
+    }
+
+    @Override
+    public String toString() {
+        return "Part Time Employee" + "\n" + super.toString() +
+                "Hourly Rate: " + hourlyRate;
+    }
+
+    @Override
+    public String promotionString() {
+        return super.promotionString() +
+                "New Hourly Rate: " + newHourlyRate + "\n";
+    }
 }
 
 

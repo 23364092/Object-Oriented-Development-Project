@@ -4,23 +4,19 @@ import java.util.List;
 public class Employee {
     private String employeeId;
     private String name;
-    private double salary;
     private String position;
     private PayslipSet payslips;
     private String dateOfEmployment;
     protected SalaryScaleReader reader = new SalaryScaleReader();
+    private String contractType;
 
-    public Employee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment) {
+    public Employee(String employeeId, String name,String position, int salaryScale, String dateOfEmployment, String contractType) {
         this.employeeId = employeeId;
         this.name = name;
         this.position = position;
-        this.salary = getSalary(position, salaryScale);
         this.dateOfEmployment = dateOfEmployment;
         this.payslips = new PayslipSet();
-    }
-
-    public double getSalary(String position, int salaryScale) {
-        return reader.getSalaryScaleForPoint(position, salaryScale);
+        this.contractType = contractType;
     }
 
     public PayslipSet getPayslipSet() {
@@ -39,8 +35,12 @@ public class Employee {
         return position;
     }
 
-    public double getSalary() {
-        return salary;
+    public String getDateOfEmployment(){
+        return dateOfEmployment;
+    }
+
+    public String getContractType() {
+        return contractType;
     }
 
     public Payslip getFirstPayslip() {
@@ -61,9 +61,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee ID: " + employeeId + "\n" +
-                "Name: " + name + "\n" +
-                "Position: " + position + "\n" +
-                "Salary: " + salary;
+            return "Employee ID: " + employeeId + "\n" +
+                    "Name: " + name + "\n" +
+                    "Position: " + position + "\n";
+        }
     }
-}

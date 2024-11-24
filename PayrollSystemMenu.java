@@ -59,6 +59,9 @@ public class PayrollSystemMenu {
                                 System.out.println("Enter Employee Name: ");
                                 String newEmployeeName = input.nextLine();
 
+                                System.out.println("Enter Contract Type: ");
+                                String newContractType = input.nextLine();
+
                                 System.out.println("Enter Employee Position: ");
                                 String newEmployeePosition = input.nextLine();
 
@@ -68,7 +71,7 @@ public class PayrollSystemMenu {
                                 System.out.println("Enter Date Of Employment: ");
                                 String newDateOfEmployment = input.nextLine();
 
-                                Employee newEmployee = new Employee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment);
+                                Employee newEmployee = new Employee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, newContractType);
 
                                 payroll.addEmployee(newEmployee);
 
@@ -91,7 +94,7 @@ public class PayrollSystemMenu {
 
                 if (payroll.employeeCheck(employeeId)) {
                     if (command.equals("E")) {
-                        if (payroll.getContractType(employeeId) == "FULL-TIME") {
+                        if (payroll.getEmployee(employeeId).getContractType().equals("FULL-TIME")) {
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
@@ -108,7 +111,7 @@ public class PayrollSystemMenu {
                                     employeeMenu = false;
                                 }
                             }
-                        } else if (payroll.getContractType(employeeId) == "PART-TIME") {
+                        } else if (payroll.getEmployee(employeeId).getContractType().equals("PART-TIME")) {
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {

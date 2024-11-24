@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class CSVReaderEmployee {
-    String filePath = "src/Employees.csv";
+    String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\Employees.csv";
 
     //Constructor for creating reader object
     public CSVReaderEmployee() {
@@ -24,14 +24,19 @@ public class CSVReaderEmployee {
                 String[] data = line.split(",");
                 String employeeId = data[0].trim();
                 String name = data[1].trim();
-                String position = data[2].trim();
-                int salaryScale = Integer.parseInt(data[3].trim());
-                String dateOfEmployment = data[4].trim();
+                String contractType = data[2].trim();
+                String position = data[3].trim();
+                int salaryScale = Integer.parseInt(data[4].trim());
+                String dateOfEmployment = data[5].trim();
 
-                //Then add each employee object created to the payroll system employees array
-                payrollSystem.addEmployee(new Employee(employeeId, name, position, salaryScale, dateOfEmployment));
+                if (contractType.equals("FULL-TIME")) {
+                    //Then add each employee object created to the payroll system employees array
+                    payrollSystem.addEmployee(new FullTimeEmployee(employeeId, name, position, salaryScale, dateOfEmployment, contractType));
+                } else if (contractType.equals("PART-TIME")) {
+                    payrollSystem.addEmployee(new PartTimeEmployee(employeeId, name, position, salaryScale, dateOfEmployment,contractType));
+                }
             }
-            payrollSystem.populatePayslips();
+            payrollSystem.populatePaySlips();
         } catch (IOException e) {
             //Throw an error if the file cant be read properly
             System.err.println("Error reading the csv file");

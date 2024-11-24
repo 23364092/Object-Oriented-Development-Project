@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.time.DayOfWeek;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDate;
 
 public class PayrollSystem {

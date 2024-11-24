@@ -1,23 +1,22 @@
 public class PartTimeEmployee extends Employee {
         private double hourlyRate;
-        private double hoursWorked;
 
-        public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, double hourlyRate) {
-            super(employeeId, name, position, salaryScale, dateOfEmployment);
-            this.hourlyRate = hourlyRate;
+        public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
+            super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);
+            this.hourlyRate = getHourlyRate(position, salaryScale);
         }
 
-        public double getHourlyRate() {
-            return hourlyRate;
+        public double getHourlyRate(String position, int salaryScale){
+            return reader.getSalaryScaleForPoint(position, salaryScale);
         }
 
-        public double calculateGrossPay(int hoursWorked) {
+        public double calculateGrossPay(double hoursWorked) {
             return hoursWorked * hourlyRate;
         }
 
         @Override
         public String toString() {
-            return super.toString() + "\n" +
+            return "Part Time Employee" + "\n" + super.toString() +
                     "Hourly Rate: " + hourlyRate;
         }
 }

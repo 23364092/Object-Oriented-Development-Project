@@ -11,6 +11,10 @@ public class FullTimeEmployee extends Employee{
         return reader.getSalaryScaleForPoint(position, salaryScale);
     }
 
+    public double getNewSalary() {
+        return newSalary;
+    }
+
 
     public void tempPromoteEmployee(int salaryScale) {
         newSalary =  reader.getNewSalary(getPosition(), salaryScale);
@@ -20,7 +24,7 @@ public class FullTimeEmployee extends Employee{
     @Override
     public void permPromoteEmployee() {
         super.permPromoteEmployee();
-        salary = newSalary;
+        salary = getNewSalary();
     }
 
     @Override
@@ -28,5 +32,10 @@ public class FullTimeEmployee extends Employee{
        return "Full Time Employee" +  "\n"
                + super.toString() +
                "Salary: " + salary;
+    }
+
+    public String promotionString() {
+        return super.promotionString() +
+                "New Salary: " + newSalary + "\n";
     }
 }

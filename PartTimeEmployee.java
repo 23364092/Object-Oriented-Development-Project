@@ -13,6 +13,24 @@ public class PartTimeEmployee extends Employee {
         return reader.getSalaryScaleForPoint(position, salaryScale);
     }
 
+    public void submitPayClaim(double hours, PayrollSystem payroll) {
+    if (!hasSubmittedClaim && payroll.fridayCheck()) {
+        this.claimedHours = hours;
+        this.hasSubmittedClaim = true;
+        System.out.println("Pay claim submitted.");
+    } else {
+        System.out.println("Failed to submit claim. Deadline missed or already submitted.");
+    }
+    }
+
+    public boolean hasValidClaim() {
+    return hasSubmittedClaim;
+    }
+
+    public double getClaimedHours() {
+    return claimedHours;
+    }
+    
     @Override
     public void permPromoteEmployee() {
         super.permPromoteEmployee();

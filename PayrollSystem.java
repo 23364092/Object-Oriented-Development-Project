@@ -124,9 +124,9 @@ public class PayrollSystem {
         }
     }
     public void generatePayslips() {
-    LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now();
 
-    if (today.getDayOfMonth() == 25) {
+        if (today.getDayOfMonth() == 25) {
         employees.forEach(employee -> {
             if (employee instanceof FullTimeEmployee fullTime) {
                 generateFullTimePayslip(fullTime, today);
@@ -135,8 +135,28 @@ public class PayrollSystem {
             }
         });
         System.out.println("Payslips generated for eligible employees.");
-    } else {
+        } else {
         System.out.println("Today is not the 25th.");
+        }
     }
+    private void generateFullTimePayslip(FullTimeEmployee fullTime, LocalDate date) {
+    payslip slip = new payslip(
+        Integer.parseInt(fullTime.getEmployeeId()),
+        fullTime.getSalary(fullTime.getPosition(), fullTime.getSalaryScale()),
+        0, date.getDayOfMonth(), date.getMonthValue(), date.getYear());
+    fullTime.addPayslip(slip);
+    }
+    private void generatePartTimePayslip(PartTimeEmployee partTime, LocalDate date) {
+    payslip slip = new payslip(
+        Integer.parseInt(partTime.getEmployeeId()),
+        partTime.getHourlyRate(partTime.getPosition(), partTime.getSalaryScale()),
+        partTime.getClaimedHours(),
+        date.getDayOfMonth(), date.getMonthValue(), date.getYear());
+    partTime.addPayslip(slip);
+}
+    public boolean fridayCheck() {
+        LocalDate today = LocalDate.now();
+        LocalDate secondFriday = today.with(TemporalAdjusters.dayOfWeekInMonth(2, DayOfWeek.FRIDAY));
+    return today.isBefore(secondFriday) || today.isEqual(secondFriday);
 }
 }

@@ -168,7 +168,7 @@ public class PayrollSystemMenu {
 
                                     if (result) {
                                         System.out.println("Input hours worked this month: ");
-                                        int hoursWorked = Integer.parseInt(input.nextLine());
+                                        hoursWorked = Integer.parseInt(input.nextLine());
 
                                         //payroll.submitPayClaim(hoursWorked);
                                     }

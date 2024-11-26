@@ -123,4 +123,20 @@ public class PayrollSystem {
             return false;
         }
     }
+    public void generatePayslips() {
+    LocalDate today = LocalDate.now();
+
+    if (today.getDayOfMonth() == 25) {
+        employees.forEach(employee -> {
+            if (employee instanceof FullTimeEmployee fullTime) {
+                generateFullTimePayslip(fullTime, today);
+            } else if (employee instanceof PartTimeEmployee partTime && partTime.hasValidClaim()) {
+                generatePartTimePayslip(partTime, today);
+            }
+        });
+        System.out.println("Payslips generated for eligible employees.");
+    } else {
+        System.out.println("Today is not the 25th.");
+    }
+}
 }

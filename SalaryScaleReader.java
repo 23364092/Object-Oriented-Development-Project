@@ -31,7 +31,7 @@ public class SalaryScaleReader {
                     String currentPosition = data[0].trim();
                     int scalePoint = Integer.parseInt(data[1].trim());
 
-                     if (currentPosition.equals(position)) {
+                    if (currentPosition.equals(position)) {
                         try {
 
                             if (scalePoint == salaryScale) {
@@ -50,10 +50,14 @@ public class SalaryScaleReader {
         return salary;
     }
 
+
+    // Find position of new salary scale within same position if new salary scale exists in the employees current position
+    // If salary scale doesnt exist in current position the current position needs to change to the new position category and set the salary scale to the first in that position category
     public double getNewSalary(String position, int newSalaryScale) {
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             newPosition = position;
+            this.newSalaryScale = newSalaryScale;
             String nextLine = br.readLine();
 
             while (nextLine != null) {
@@ -65,25 +69,15 @@ public class SalaryScaleReader {
 
                 String[] data = nextLine.split(",");
                 line = nextLine;
-                nextLine = br.readLine();;
+                nextLine = br.readLine();
 
                 if (data.length > 2) {
                     String currentPosition = data[0].trim();
                     int scalePoint = Integer.parseInt(data[1].trim());
-
-                    if (currentPosition.equals(position)) {
+                    if (currentPosition.equals(position) && scalePoint == newSalaryScale) {
                         try {
-
-                            if (scalePoint == newSalaryScale) {
-                                salary = Double.parseDouble(data[2].trim());
-                                break;
-                            } else if (scalePoint != newSalaryScale && nextLine.isEmpty()) {
-                                nextLine = br.readLine();
-                                newPosition = data[0].trim();
-                                this.newSalaryScale = Integer.parseInt(data[1].trim());
-                                salary = Double.parseDouble(data[2].trim());
-                                break;
-                            }
+                            salary = Double.parseDouble(data[2].trim());
+                            break;
                         } catch (NumberFormatException e) {
                             System.err.println("Number format problem");
                         }
@@ -104,4 +98,3 @@ public class SalaryScaleReader {
         return newSalaryScale;
     }
 }
-

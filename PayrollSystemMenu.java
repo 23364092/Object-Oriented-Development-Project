@@ -158,7 +158,13 @@ public class PayrollSystemMenu {
                                     payroll.getEmployee(employeeId).printAllPayslips();
                                 } else if (command.equals("SU")) {
                                     //Check date on system. If its second friday of month or gone past then this function isnt possible
-                                    boolean result = payroll.fridayCheck();
+                                    double hoursWorked = Double.parseDouble(input.nextLine());
+                                    Employee emp = payroll.getEmployee(employeeId);
+                                    if (emp instanceof PartTimeEmployee partTime) { //Pattern matching
+                                        partTime.submitPayClaim(hoursWorked, payroll); // Sumbits claim
+                                    } else {
+                                        System.out.println("Only part-time employees can submit claims.");
+                                    }
 
                                     if (result) {
                                         System.out.println("Input hours worked this month: ");

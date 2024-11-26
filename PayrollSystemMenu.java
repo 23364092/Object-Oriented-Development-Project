@@ -166,7 +166,7 @@ public class PayrollSystemMenu {
                                         System.out.println("Only part-time employees can submit claims.");
                                     }
 
-                                    if (result) {
+                                    if (command.equals("SU")) {
                                         System.out.println("Input hours worked this month: ");
                                         hoursWorked = Integer.parseInt(input.nextLine());
 

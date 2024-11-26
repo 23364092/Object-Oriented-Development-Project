@@ -154,9 +154,4 @@ public class PayrollSystem {
         date.getDayOfMonth(), date.getMonthValue(), date.getYear());
     partTime.addPayslip(slip);
 }
-    public boolean fridayCheck() {
-        LocalDate today = LocalDate.now();
-        LocalDate secondFriday = today.with(TemporalAdjusters.dayOfWeekInMonth(2, DayOfWeek.FRIDAY));
-    return today.isBefore(secondFriday) || today.isEqual(secondFriday);
-}
 }

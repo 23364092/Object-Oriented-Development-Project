@@ -1,6 +1,8 @@
 public class PartTimeEmployee extends Employee {
     private double hourlyRate;
     private double newHourlyRate;
+    private boolean hasSubmittedClaim = false;
+    private double claimedHours = 0;
 
     public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
         super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);

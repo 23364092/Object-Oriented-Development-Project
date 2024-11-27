@@ -81,6 +81,8 @@ public abstract class Employee{
 
     public void addPayslip(Payslip p) {
         payslips.addPayslip(p);
+        CSVWriterPayslip writer = new CSVWriterPayslip();
+        writer.writePayslipsToCSV(p);
     }
 
     @Override

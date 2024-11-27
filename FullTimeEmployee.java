@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class FullTimeEmployee extends Employee {
     private int salaryScale;

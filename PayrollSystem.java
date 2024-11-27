@@ -14,17 +14,19 @@ public class PayrollSystem {
     public PayrollSystem() {
         employees = new ArrayList<>();
         populateEmployeesFromCSV();
+        autoAddPayslips();
     }
 
     public ArrayList<Employee> getEmployees() {
         return employees;
     }
+
     public void autoAddPayslips(){
         LocalDate date = LocalDate.now();
         if (date.getDayOfMonth() == 25) {
             for (Employee employee : employees) {
                 if (employee.getContractType().equals("FULLTIME")) {
-                    //employee.addPayslip(new Payslip());
+                    employee.addPayslip(new Payslip(employee.getEmployeeId(), employee.getSalary(), date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
                 }
             }
         }
@@ -80,30 +82,12 @@ public class PayrollSystem {
         }
     }
 
-    public void writeEmployee(Employee employee) {
-        CSVWriterEmployee writer = new CSVWriterEmployee();
-        writer.writeEmployeeToCSV(employee);
-    }
-
-    //Wait until HR and Salary Scale class is done
-    public void promoteEmployee(String employeeId, String salaryScale) {
-        //HR.promoteEmployee(employeeId, salaryScale);
-    }
-
     public boolean adminPasswordCheck(String otherPassword) {
         if (otherPassword.equals(adminPassword)) {
             return true;
         } else {
             return false;
         }
-    }
-
-    public void submitPayClaim(String employeeId, int hoursWorked){
-        PartTimeEmployee employee = (PartTimeEmployee) getEmployee(employeeId);
-        if (employee.getContractType().equals("PARTTIME")) {
-            employee.setHoursWorked(hoursWorked);
-        }
-        // employee.payClaim(employeeId);
     }
 
     public boolean hrPasswordCheck(String otherPassword) {

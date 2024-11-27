@@ -1,12 +1,10 @@
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.Scanner;
 import java.io.IOException;
 
 public class PayrollSystemMenu {
 
     private Scanner input;
-    private CSVReaderEmployee employeeReader = new CSVReaderEmployee();
     private String employeeId;
     private String command;
     private String password;

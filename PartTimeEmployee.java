@@ -1,63 +1,51 @@
+import java.time.LocalDate;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class PartTimeEmployee extends Employee {
     private double hourlyRate;
-    private double newHourlyRate;
-    private boolean hasSubmittedClaim = false;
-    private double claimedHours = 0;
+    private int hoursWorked;
+    private boolean claim;
 
-    public PartTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
-        super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);
-        this.hourlyRate = getHourlyRate(position, salaryScale);
-    }
-
-    public double getHourlyRate(String position, int salaryScale){
-        return reader.getSalaryScaleForPoint(position, salaryScale);
+    public PartTimeEmployee(String employeeId, String name, String position, double hourlyRate, String dateOfEmployment, String contractType) {
+        super(employeeId, name, position, dateOfEmployment, contractType);
+        this.hourlyRate = hourlyRate;
+        this.hoursWorked = 0;
+        this.claim = false;
+        setSalary(getSalary());
     }
 
-    public void submitPayClaim(double hours, PayrollSystem payroll) {
-    if (!hasSubmittedClaim && payroll.fridayCheck()) {
-        this.claimedHours = hours;
-        this.hasSubmittedClaim = true;
-        System.out.println("Pay claim submitted.");
-    } else {
-        System.out.println("Failed to submit claim. Deadline missed or already submitted.");
-    }
+    public void setHoursWorked(int hoursWorked) {
+        this.hoursWorked = hoursWorked;
     }
 
-    public boolean hasValidClaim() {
-    return hasSubmittedClaim;
-    }
-
-    public double getClaimedHours() {
-    return claimedHours;
-    }
-    
     @Override
-    public void permPromoteEmployee() {
-        super.permPromoteEmployee();
-        hourlyRate = newHourlyRate;
-
-    }
-
-    public void tempPromoteEmployee(int salaryScale) {
-        newHourlyRate = reader.getNewSalary(getPosition(), salaryScale);
-    }
-
-
-    public double calculateGrossPay(double hoursWorked) {
+    public double getSalary() {
         return hoursWorked * hourlyRate;
     }
 
     @Override
-    public String toString() {
-        return "Part Time Employee" + "\n" + super.toString() +
-                "Hourly Rate: " + hourlyRate;
+    public void createPayslip(){
+        if (!claim) {
+            claim = true;
+            LocalDate date = LocalDate.now();
+            Payslip p = new Payslip(getEmployeeId(), getSalary(), date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+            addPayslip(p);
+            CSVWriterPayslip writer = new CSVWriterPayslip();
+            writer.writePayslipsToCSV(p);
+        }
+    }
+
+    public double getHourlyRate(){
+        return hourlyRate;
     }
 
     @Override
-    public String promotionString() {
-        return super.promotionString() +
-                "New Hourly Rate: " + newHourlyRate + "\n";
+    public String toString() {
+        return "Part-Time Employee\n" +
+                "-----------------\n" +
+                super.toString() +
+                "\nHourly Rate: €" + hourlyRate +
+                "\n-----------------\n" + "\n\n";
     }
 }
-
-

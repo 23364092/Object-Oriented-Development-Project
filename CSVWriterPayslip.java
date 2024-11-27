@@ -3,38 +3,23 @@ import java.util.*;
 
 public class CSVWriterPayslip {
 
-    private static final String FILE_PATH = "src/payslip.csv";  // File path where payslips will be written
+    private static final String FILE_PATH = "src/Payslip.csv";  // File path where payslips will be written
 
     // Write new payslips to CSV file
-    public void writePayslipsToCSV(PayrollSystem payrollSystem) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {  // Append mode
-            // Write the header if the file is empty (i.e., first time writing)
-            if (new File(FILE_PATH).length() == 0) {
-                writer.println("employee_id,salary,year,month,day");
-            }
+    public void writePayslipsToCSV(Payslip p) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {// Append mode
+            String payslipEntry = p.getEmployee_id() + "," +
+                    p.getAnnualSalary() + "," +
+                    p.getDate().getYear() + "," +
+                    p.getDate().getMonthValue() + "," +
+                    p.getDate().getDayOfMonth();
 
+            // Check if the payslip already exists in the file
+            if (!isDuplicatePayslip(payslipEntry)) {
+                writer.println(payslipEntry);  // Write new payslip
+            }
             // Iterate over each employee in the payroll system
-            for (Employee employee : payrollSystem.getEmployees()) {
-                // Get the payslips for this employee
-                ArrayList<Payslip> payslips = employee.getPayslipSet().getPayslips();
-
-                // Write each payslip to the CSV file if it is not a duplicate
-                for (Payslip payslip : payslips) {
-                    String payslipEntry = payslip.getEmployee_id() + "," +
-                            payslip.getAnnualSalary() + "," +
-                            payslip.getDate().getYear() + "," +
-                            payslip.getDate().getMonthValue() + "," +
-                            payslip.getDate().getDayOfMonth();
-
-                    // Check if the payslip already exists in the file
-                    if (!isDuplicatePayslip(payslipEntry)) {
-                        writer.println(payslipEntry);  // Write new payslip
-                    }
-                }
-            }
-
-            System.out.println("New payslips successfully written to " + FILE_PATH);
-
+            System.out.println("Payslip successfully added.");
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
@@ -56,6 +41,6 @@ public class CSVWriterPayslip {
             System.err.println("Error reading from file: " + e.getMessage());
         }
 
-        return false;  // No duplicate found
+        return false;
     }
 }

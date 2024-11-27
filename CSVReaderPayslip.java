@@ -3,7 +3,7 @@ import java.util.*;
 
 public class CSVReaderPayslip {
 
-    private static final String FILE_PATH = "src/payslip.csv";  // File path where payslips are stored
+    private static final String FILE_PATH = "src/Payslip.csv";  // File path where payslips are stored
 
     // Method to read payslips from CSV file and add them to the payroll system
     public void readPayslipsFromCSV(PayrollSystem payrollSystem) {

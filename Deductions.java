@@ -65,11 +65,11 @@ public class Deductions {
 
     public double calculateNettPay(double grossPay) {
         double totalTax = PAYE + USC + PRSI;
-        return grossPay - ((totalTax + 80 + (grossPay * 0.008)) - 4000 ) ;
+        System.out.println(totalTax);
+        return grossPay - ((totalTax + 80 + (grossPay * 0.008))) ;
         /**
          * €80 a month for health insurance
          * grossPay * 0.008 is 0.8% for union fees
-         * €4000 for tax credits
          */
     }
 
@@ -95,6 +95,6 @@ public class Deductions {
                 "PAYE: " + String.format("€%.2f", PAYE) + "\n" +
                 "Income Tax: " + String.format("€%.2f", incomeTax) + "\n" +
                 "PRSI: " + String.format("€%.2f", PRSI) + "\n" +
-                "Net Pay after Deductions: " + String.format("€%.2f", nettPay);
+                "Nett Pay: " + String.format("€%.2f", nettPay);
     }
 }

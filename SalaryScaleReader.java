@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class SalaryScaleReader {
-    private String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\SalaryScale";
+    private String filePath = "src/SalaryScale.csv";
     private double salary = -1;
     private String line;
     private String newPosition;
@@ -56,31 +56,36 @@ public class SalaryScaleReader {
     public double getNewSalary(String position, int newSalaryScale) {
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
-            newPosition = position;
             this.newSalaryScale = newSalaryScale;
-            String nextLine = br.readLine();
+            line = br.readLine();
 
-            while (nextLine != null) {
-                nextLine = nextLine.trim();
+            while (line != null) {
+                line = line.trim();
 
-                if (nextLine.isEmpty()) {
+                if (line.isEmpty()) {
                     continue;
                 }
 
-                String[] data = nextLine.split(",");
-                line = nextLine;
-                nextLine = br.readLine();
+                String[] data = line.split(",");
 
                 if (data.length > 2) {
                     String currentPosition = data[0].trim();
                     int scalePoint = Integer.parseInt(data[1].trim());
+                    String promotionPosition = data[3].trim();
                     if (currentPosition.equals(position) && scalePoint == newSalaryScale) {
                         try {
                             salary = Double.parseDouble(data[2].trim());
+                            newPosition = currentPosition;
+                            this.newSalaryScale = newSalaryScale;
                             break;
                         } catch (NumberFormatException e) {
                             System.err.println("Number format problem");
                         }
+                    } else if (currentPosition.equals(position) && !promotionPosition.equals(" ")) {
+                        currentPosition = promotionPosition;
+                        newSalaryScale = 1;
+                        salary = getSalaryScaleForPoint(currentPosition, newSalaryScale);
+                        return salary;
                     }
                 }
             }

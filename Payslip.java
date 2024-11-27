@@ -3,11 +3,11 @@ import java.time.LocalDate;
 public class Payslip implements Comparable<Payslip>{
     private String employee_id;
     private LocalDate date;
-    private double annualSalary;
+    private double salary;
 
-    public Payslip(String employee_id, double annualSalary, int year, int month, int day){
+    public Payslip(String employee_id, double salary, int year, int month, int day){
         this.employee_id = employee_id;
-        this.annualSalary = annualSalary;
+        this.salary = salary;
         this.date = LocalDate.of(year, month, day);
     }
 
@@ -16,7 +16,7 @@ public class Payslip implements Comparable<Payslip>{
     }
 
     public double getAnnualSalary() {
-        return annualSalary;
+        return salary;
     }
 
     public LocalDate getDate(){
@@ -32,11 +32,15 @@ public class Payslip implements Comparable<Payslip>{
         return d.calculateNettPay(this.getAnnualSalary());
     }
 
+    public int getMonth(){
+        return date.getMonthValue();
+    }
+
     @Override
     public String toString(){
         Deductions d = new Deductions(this);
         return "Date: " + date + "\n" +
-                "Salary: €" + String.format("€%.2f",annualSalary) + "\n"
+                "Gross Pay: €" + String.format("%.2f",salary) + "\n"
                 + d.toString() + "\n";
     }
 

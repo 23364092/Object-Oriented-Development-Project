@@ -1,25 +1,31 @@
-import java.time.LocalDate;
+
 import java.util.List;
 
-public class Employee {
+public abstract class Employee{
     private String employeeId;
     private String name;
     private String position;
-    private int salaryScale;
+    private double salary;
     private PayslipSet payslips;
     private String dateOfEmployment;
     protected SalaryScaleReader reader = new SalaryScaleReader();
     private String contractType;
     private boolean promotionOffer;
 
-    public Employee(String employeeId, String name,String position, int salaryScale, String dateOfEmployment, String contractType) {
+    public Employee(String employeeId, String name,String position, String dateOfEmployment, String contractType) {
         this.employeeId = employeeId;
         this.name = name;
         this.position = position;
-        this.salaryScale = salaryScale;
+        this.salary = 0;
         this.dateOfEmployment = dateOfEmployment;
         this.payslips = new PayslipSet();
         this.contractType = contractType;
+    }
+
+    public abstract double getSalary();
+
+    public void setSalary(double s){
+        salary = s;
     }
 
     public PayslipSet getPayslipSet() {
@@ -38,10 +44,6 @@ public class Employee {
         return position;
     }
 
-    public int getSalaryScale() {
-        return salaryScale;
-    }
-
     public String getDateOfEmployment(){
         return dateOfEmployment;
     }
@@ -50,9 +52,11 @@ public class Employee {
         return contractType;
     }
 
-    public Payslip getFirstPayslip() {
+    public Payslip getRecentPayslip() {
         return payslips.getRecentPayslip();
     }
+
+    public abstract void createPayslip();
 
     public void printAllPayslips() {
         List<Payslip> payslipList = payslips.getPayslips();
@@ -68,7 +72,7 @@ public class Employee {
 
     public void permPromoteEmployee() {
         position = reader.getNewPosition();
-        salaryScale = reader.getNewSalaryScale();
+        //salaryScale = reader.getNewSalaryScale();
     }
 
     public void setPromotionOffer(boolean promotionOffer) {
@@ -79,16 +83,21 @@ public class Employee {
         return promotionOffer;
     }
 
+    public void addPayslip(Payslip p) {
+        payslips.addPayslip(p);
+    }
+
     @Override
     public String toString() {
-            return "Employee ID: " + employeeId + "\n" +
-                    "Name: " + name + "\n" +
-                    "Position: " + position + "\n";
+        return "Employee ID: " + employeeId + "\n" +
+                "Name: " + name + "\n" +
+                "Position: " + position + "\n" +
+                "Contract Type: " + contractType;
     }
 
 
     public  String promotionString() {
         return "Employee ID: " + employeeId + "\n" +
                 "New Position: " + reader.getNewPosition() + "\n";
-     }
+    }
 }

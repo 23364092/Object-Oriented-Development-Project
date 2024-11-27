@@ -1,46 +1,54 @@
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class CSVReaderEmployee {
-    String filePath = "C:\\Users\\harri\\Desktop\\Object-Oriented-Development-Project\\Project\\src\\Employees.csv";
+    private final String filePath = "src/Employees.csv";
 
-    //Constructor for creating reader object
+    // Constructor
     public CSVReaderEmployee() {
     }
 
-    //Read from csv method with no argument because path is already set and no return type becuse we dont need to return anything
+    // Reads employee data from the CSV and populates the PayrollSystem
     public void readEmployeesFromCSV(PayrollSystem payrollSystem) {
-        String line;
-
-        //br.readLine() skips the first line ie.header then starts reading the data with the while loop
-        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            br.readLine();
-
-            //While there is data in the line each piece is saved to a respective variable
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine(); // Skip the header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                String employeeId = data[0].trim();
-                String name = data[1].trim();
-                String contractType = data[2].trim();
-                String position = data[3].trim();
-                int salaryScale = Integer.parseInt(data[4].trim());
-                String dateOfEmployment = data[5].trim();
+                if (data.length != 6) { // Ensure row has the correct number of columns
+                    System.err.println("Skipping malformed line: " + line);
+                    continue;
+                }
 
-                if (contractType.equals("FULL-TIME")) {
-                    //Then add each employee object created to the payroll system employees array
-                    payrollSystem.addEmployee(new FullTimeEmployee(employeeId, name, position, salaryScale, dateOfEmployment, contractType));
-                } else if (contractType.equals("PART-TIME")) {
-                    payrollSystem.addEmployee(new PartTimeEmployee(employeeId, name, position, salaryScale, dateOfEmployment,contractType));
+                try {
+                    String employeeId = data[0].trim();
+                    String name = data[1].trim();
+                    String position = data[2].trim();
+                    String dateOfEmployment = data[4].trim();
+                    String contractType = data[5].trim().toUpperCase();
+
+                    if (contractType.equals("FULLTIME")) {
+                        int salaryScale = Integer.parseInt(data[3].trim());
+                        payrollSystem.addEmployee(new FullTimeEmployee(
+                                employeeId, name, position, salaryScale, dateOfEmployment, contractType
+                        ));
+                    } else if (contractType.equals("PARTTIME")) {
+                        double hourlyRate = Double.parseDouble(data[3].trim());
+                        payrollSystem.addEmployee(new PartTimeEmployee(
+                                employeeId, name, position, hourlyRate, dateOfEmployment, contractType
+                        ));
+                    } else {
+                        System.err.println("Unknown contract type for employee ID: " + employeeId);
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing number for line: " + line);
                 }
             }
-            payrollSystem.populatePaySlips();
+
+            payrollSystem.populatePayslips();
+
         } catch (IOException e) {
-            //Throw an error if the file cant be read properly
-            System.err.println("Error reading the csv file");
+            System.err.println("Error reading the CSV file: " + e.getMessage());
         }
     }
-
 }

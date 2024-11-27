@@ -1,41 +1,39 @@
-public class FullTimeEmployee extends Employee{
-    private double salary;
-    private double newSalary;
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public class FullTimeEmployee extends Employee {
+    private int salaryScale;
+
 
     public FullTimeEmployee(String employeeId, String name, String position, int salaryScale, String dateOfEmployment, String contractType) {
-        super(employeeId, name, position, salaryScale, dateOfEmployment, contractType);
-        this.salary = getSalary(position, salaryScale);
+        super(employeeId, name, position, dateOfEmployment, contractType);
+        this.salaryScale = salaryScale;
+        setSalary(getSalary());
     }
-
-    public double getSalary(String position, int salaryScale) {
-        return reader.getSalaryScaleForPoint(position, salaryScale);
-    }
-
-    public double getNewSalary() {
-        return newSalary;
-    }
-
-
-    public void tempPromoteEmployee(int salaryScale) {
-        newSalary =  reader.getNewSalary(getPosition(), salaryScale);
-    }
-
 
     @Override
-    public void permPromoteEmployee() {
-        super.permPromoteEmployee();
-        salary = getNewSalary();
+    public double getSalary() {
+       return reader.getSalaryScaleForPoint(getPosition(), salaryScale);
+    }
+
+    @Override
+    public void createPayslip(){
+        LocalDate date = LocalDate.now();
+        Payslip p = new Payslip(getEmployeeId(), getSalary(), date.getYear(), date.getMonthValue(), 25);
+        addPayslip(p);
+    }
+
+    public void tempPromoteEmployee(int newSalaryScale) {
+        double newSalary = reader.getSalaryScaleForPoint(getPosition(), newSalaryScale);
+        System.out.println("Temporary Promotion: New Salary would be " + newSalary);
     }
 
     @Override
     public String toString() {
-       return "Full Time Employee" +  "\n"
-               + super.toString() +
-               "Salary: " + salary;
-    }
-
-    public String promotionString() {
-        return super.promotionString() +
-                "New Salary: " + newSalary + "\n";
+        return "Full-Time Employee\n" +
+                "-----------------\n" +
+                super.toString() +
+                "\nScale Point: " + salaryScale +
+                "\n-----------------\n" + "\n\n";
     }
 }

@@ -13,10 +13,21 @@ public class PayrollSystem {
 
     public PayrollSystem() {
         employees = new ArrayList<>();
+        populateEmployeesFromCSV();
     }
 
     public ArrayList<Employee> getEmployees() {
         return employees;
+    }
+    public void autoAddPayslips(){
+        LocalDate date = LocalDate.now();
+        if (date.getDayOfMonth() == 25) {
+            for (Employee employee : employees) {
+                if (employee.getContractType().equals("FULLTIME")) {
+                    //employee.addPayslip(new Payslip());
+                }
+            }
+        }
     }
 
     public Employee getEmployee(String employeeId) {
@@ -38,9 +49,6 @@ public class PayrollSystem {
                 break;
             }
         }
-        if (!result) {
-            System.err.println("Warning: Employee ID not found.");
-        }
         return result;
     }
 
@@ -51,17 +59,33 @@ public class PayrollSystem {
         if (employeeCheck(employeeId)) {
             position = getEmployee(employeeId).getPosition();
 
-            if (position.contains("ADMIN")) {
+            if (position.contains("ADMINISTRATOR") || position.contains("SENIOR ADMINISTRATOR") || position.contains("EXECUTIVE ADMINISTRATOR") || position.contains("SENIOR EXECUTIVE ADMINISTRATOR") || position.contains("SENIOR ADMINISTRATIVE OFFICER I") || position.contains("SENIOR ADMINISTRATIVE OFFICER II") || position.contains("SENIOR ADMINISTRATIVE OFFICER III")) {
                 result = true;
             }
         }
         return result;
     }
 
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
+    public StringBuilder printEmployees(){
+        StringBuilder s = new StringBuilder();
+        for (Employee e : employees) {
+            s.append(e.toString());
+        }
+        return s;
     }
 
+    public void addEmployee(Employee employee) {
+        if (!employees.contains(employee)) {
+            employees.add(employee);
+        } else {
+            System.err.println("Attempted to add duplicate employee.");
+        }
+    }
+
+    public void writeEmployee(Employee employee) {
+        CSVWriterEmployee writer = new CSVWriterEmployee();
+        writer.writeEmployeeToCSV(employee);
+    }
 
     //Wait until HR and Salary Scale class is done
     public void promoteEmployee(String employeeId, String salaryScale) {
@@ -76,6 +100,14 @@ public class PayrollSystem {
         }
     }
 
+    public void submitPayClaim(String employeeId, int hoursWorked){
+        PartTimeEmployee employee = (PartTimeEmployee) getEmployee(employeeId);
+        if (employee.getContractType().equals("PARTTIME")) {
+            employee.setHoursWorked(hoursWorked);
+        }
+       // employee.payClaim(employeeId);
+    }
+
     public boolean hrPasswordCheck(String otherPassword) {
         if (otherPassword.equals(hrPassword)) {
             return true;
@@ -84,24 +116,26 @@ public class PayrollSystem {
         }
     }
 
+
     public String getEmployeeDetails(String employeeId) {
         return getEmployee(employeeId).toString();
     }
 
-    public void populatePaySlips() {
+    public void populateEmployeesFromCSV() {
+        CSVReaderEmployee csvReader = new CSVReaderEmployee();
+        csvReader.readEmployeesFromCSV(this); // This uses the PayrollSystem instance to add employees
+    }
+
+    public void populatePayslips() {
         CSVReaderPayslip reader = new CSVReaderPayslip();
         reader.readPayslipsFromCSV(this);
     }
 
-    public void writePayslips() {
-        CSVWriterPayslip writer = new CSVWriterPayslip();
-        writer.writePayslipsToCSV(this);
-    }
 
     public StringBuilder getEmployeeIds() {
-
         StringBuilder s = new StringBuilder();
         for (Employee e : employees) {
+            System.out.println(employees.size());
             s.append(e.getEmployeeId()).append("\n");
         }
         return s;
@@ -123,35 +157,4 @@ public class PayrollSystem {
             return false;
         }
     }
-    public void generatePayslips() {
-        LocalDate today = LocalDate.now();
-
-        if (today.getDayOfMonth() == 25) {
-        employees.forEach(employee -> {
-            if (employee instanceof FullTimeEmployee fullTime) {
-                generateFullTimePayslip(fullTime, today);
-            } else if (employee instanceof PartTimeEmployee partTime && partTime.hasValidClaim()) {
-                generatePartTimePayslip(partTime, today);
-            }
-        });
-        System.out.println("Payslips generated for eligible employees.");
-        } else {
-        System.out.println("Today is not the 25th.");
-        }
-    }
-    private void generateFullTimePayslip(FullTimeEmployee fullTime, LocalDate date) {
-        Payslip slip = new Payslip(
-                fullTime.getEmployeeId(),
-                fullTime.getSalary(fullTime.getPosition(), fullTime.getSalaryScale()),
-                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        fullTime.getPayslipSet().addPayslip(slip);
-    }
-
-    private void generatePartTimePayslip(PartTimeEmployee partTime, LocalDate date) {
-        Payslip slip = new Payslip(
-                partTime.getEmployeeId(),
-                partTime.getHourlyRate(partTime.getPosition(), partTime.getSalaryScale()),
-                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        partTime.getPayslipSet().addPayslip(slip);
-}
 }

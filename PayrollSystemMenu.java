@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -17,7 +19,6 @@ public class PayrollSystemMenu {
     public void run(PayrollSystem payroll)
             throws IOException {
 
-        employeeReader.readEmployeesFromCSV(payroll);
         boolean more = true;
 
         while (more) {
@@ -45,39 +46,61 @@ public class PayrollSystemMenu {
                             command = input.nextLine().toUpperCase();
 
                             if (command.equals("S")) {
-                                System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
+                                System.out.println("\n" + payroll.getEmployee(employeeId).getRecentPayslip().toString());
                             } else if (command.equals("E")) {
                                 System.out.println(payroll.getEmployeeDetails(employeeId));
                             } else if (command.equals("P")) {
                                 payroll.getEmployee(employeeId).printAllPayslips();
                             } else if (command.equals("A")) {
-                                System.out.println("Input details of employee you would like to add");
+                                System.out.println("Input Employee Details.\n");
 
                                 System.out.println("Enter Employee Id: ");
                                 String newEmployeeId = input.nextLine();
+                                if (payroll.employeeCheck(newEmployeeId)){
+                                    System.err.println("Warning: Employee with ID " + newEmployeeId + " already exists.");
+                                } else {
+                                    System.out.println("Enter Employee Name: ");
+                                    String newEmployeeName = input.nextLine();
 
-                                System.out.println("Enter Employee Name: ");
-                                String newEmployeeName = input.nextLine();
+                                    System.out.println("Enter Contract Type: ");
+                                    System.out.println("1) Full-Time");
+                                    System.out.println("2) Part Time");
 
-                                System.out.println("Enter Contract Type: ");
-                                String newContractType = input.nextLine();
+                                    int newContractType = Integer.parseInt(input.nextLine());
 
-                                System.out.println("Enter Employee Position: ");
-                                String newEmployeePosition = input.nextLine();
+                                    System.out.println("Enter Employee Position: ");
+                                    String newEmployeePosition = input.nextLine();
 
-                                System.out.println("Enter Employee Salary Scale: ");
-                                int newSalaryScale = Integer.parseInt(input.nextLine());
+                                    int newSalaryScale = 0;
+                                    double newHourlyRate = 0;
+                                    if (newContractType == 1) {
+                                        System.out.println("Enter Employee Salary Scale: ");
+                                        newSalaryScale = Integer.parseInt(input.nextLine());
+                                    } else if (newContractType == 2) {
+                                        System.out.println("Enter Hourly Rate: ");
+                                        newHourlyRate = Double.parseDouble(input.nextLine());
+                                    }
 
-                                System.out.println("Enter Date Of Employment: ");
-                                String newDateOfEmployment = input.nextLine();
+                                    System.out.println("Enter Date Of Employment: ");
+                                    String newDateOfEmployment = input.nextLine();
 
-                                Employee newEmployee = new Employee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, newContractType);
-
-                                payroll.addEmployee(newEmployee);
+                                    Employee newEmployee;
+                                    if (newContractType == 1) {
+                                        newEmployee = new FullTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, "FULLTIME");
+                                    } else if (newContractType == 2) {
+                                        newEmployee = new PartTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newHourlyRate, newDateOfEmployment, "PARTTIME");
+                                    } else {
+                                        System.out.println("Invalid contract type selected!");
+                                        return;
+                                    }
+                                    payroll.addEmployee(newEmployee);
+                                    CSVWriterEmployee writer = new CSVWriterEmployee();
+                                    writer.writeEmployeeToCSV(newEmployee);
+                                }
 
 
                             } else if (command.equals("R")) {
-                                System.out.println(payroll.getEmployees());
+                                System.out.println(payroll.printEmployees());
 
                             } else if (command.equals("Q")) {
                                 adminMenu = false;
@@ -88,13 +111,12 @@ public class PayrollSystemMenu {
             }
 
             if (command.equals("E") || command.equals("H")) {
-                System.out.println("Input Employee Id");
+                System.out.println("Input Employee ID:");
                 employeeId = input.nextLine().toUpperCase();
-
 
                 if (payroll.employeeCheck(employeeId)) {
                     if (command.equals("E")) {
-                        if (payroll.getEmployee(employeeId).getContractType().equals("FULL-TIME")) {
+                        if (payroll.getEmployee(employeeId).getContractType().equals("FULLTIME")) {
                             FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(employeeId);
 
                             if (payroll.getEmployee(employeeId).getPromotionOffer()) {
@@ -118,7 +140,7 @@ public class PayrollSystemMenu {
                                 command = input.nextLine().toUpperCase();
 
                                 if (command.equals("S")) {
-                                    System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
+                                    System.out.println("\n" + payroll.getEmployee(employeeId).getRecentPayslip().toString());
                                 } else if (command.equals("E")) {
                                     System.out.println(payroll.getEmployeeDetails(employeeId));
                                 } else if (command.equals("P")) {
@@ -127,7 +149,7 @@ public class PayrollSystemMenu {
                                     employeeMenu = false;
                                 }
                             }
-                        } else if (payroll.getEmployee(employeeId).getContractType().equals("PART-TIME")) {
+                        } else if (payroll.getEmployee(employeeId).getContractType().equals("PARTTIME")) {
                             PartTimeEmployee employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
 
                             if (payroll.getEmployee(employeeId).getPromotionOffer()) {
@@ -147,30 +169,30 @@ public class PayrollSystemMenu {
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
-                                System.out.println("S)how most recent payslip   E)mployee Details   P)ayslip History   SU)bmit Claim   Q)uit");
+                                System.out.print("S)how most recent payslip   E)mployee Details   P)ayslip History");
+                                if (employee.getRecentPayslip().getDate().getDayOfMonth() < LocalDate.now().getMonthValue() || employee.getRecentPayslip().getDate().getDayOfMonth() < LocalDate.now().getYear()) {
+                                        System.out.print("  SU)bmit Claim");
+                                }
+                                System.out.println("   Q)uit");
                                 command = input.nextLine().toUpperCase();
 
                                 if (command.equals("S")) {
-                                    System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
+                                    System.out.println("\n" + payroll.getEmployee(employeeId).getRecentPayslip().toString());
                                 } else if (command.equals("E")) {
                                     System.out.println(payroll.getEmployeeDetails(employeeId));
                                 } else if (command.equals("P")) {
                                     payroll.getEmployee(employeeId).printAllPayslips();
-                                } else if (command.equals("SU")) {
+                                } else if (command.equals("SU") && (employee.getRecentPayslip().getDate().getMonthValue() < LocalDate.now().getDayOfMonth() || employee.getRecentPayslip().getDate().getDayOfMonth() < LocalDate.now().getYear())) {
                                     //Check date on system. If its second friday of month or gone past then this function isnt possible
-                                    double hoursWorked = Double.parseDouble(input.nextLine());
-                                    Employee emp = payroll.getEmployee(employeeId);
-                                    if (emp instanceof PartTimeEmployee partTime) { //Pattern matching
-                                        partTime.submitPayClaim(hoursWorked, payroll); // Sumbits claim
-                                    } else {
-                                        System.out.println("Only part-time employees can submit claims.");
-                                    }
+                                    boolean result = payroll.fridayCheck();
 
-                                    if (command.equals("SU")) {
+                                    if (result) {
                                         System.out.println("Input hours worked this month: ");
-                                        hoursWorked = Integer.parseInt(input.nextLine());
+                                        int hoursWorked = Integer.parseInt(input.nextLine());
 
-                                        //payroll.submitPayClaim(hoursWorked);
+                                        employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
+                                        employee.setHoursWorked(hoursWorked);
+                                        employee.createPayslip();
                                     }
                                 } else if (command.equals("Q")) {
                                     employeeMenu = false;
@@ -192,7 +214,7 @@ public class PayrollSystemMenu {
                                 command = input.nextLine().toUpperCase();
 
                                 if (command.equals("S")) {
-                                    System.out.println("\n" + payroll.getEmployee(employeeId).getFirstPayslip().toString());
+                                    System.out.println("\n" + payroll.getEmployee(employeeId).getRecentPayslip().toString());
                                 } else if (command.equals("E")) {
                                     System.out.println(payroll.getEmployeeDetails(employeeId));
                                 } else if (command.equals("P")) {
@@ -201,26 +223,24 @@ public class PayrollSystemMenu {
                                     hrMenu = false;
                                 } else if (command.equals("PR")) {
 
-                                    System.out.println("Input Employee Id that you would like to promote");
+                                    System.out.println("Input Employee Id:");
                                     String promotionId = input.nextLine().toUpperCase();
 
                                     // Print out how long the employee has been a part of the system also
-                                    System.out.println("Input next Salary Scale you would like the employee to be promoted to");
+                                    System.out.println("Input New Salary Scale:");
                                     int salaryScale = Integer.parseInt(input.nextLine());
 
                                     System.out.println("Would you like to confirm this promotion: Y)es or N)o");
                                     command = input.nextLine().toUpperCase();
 
                                     if (command.equals("Y")) {
-                                        if (payroll.getEmployee(employeeId).getContractType().equals("FULL-TIME")) {
-                                            FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(employeeId);
+                                        if (payroll.getEmployee(promotionId).getContractType().equals("FULLTIME")) {
+                                            FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(promotionId);
                                             employee.setPromotionOffer(true);
                                             employee.tempPromoteEmployee(salaryScale);
-                                        } else if (payroll.getEmployee(employeeId).getContractType().equals("PART-TIME")) {
-                                            PartTimeEmployee employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
-                                            employee.setPromotionOffer(true);
-                                            employee.tempPromoteEmployee(salaryScale);
+                                            System.out.println("FULLTIME: " + employee.getPromotionOffer());
                                         }
+
                                         System.out.println("Promotion Offer has been sent to: " + payroll.getEmployee(promotionId).getName());
                                     } else if (command.equals("N")) {
                                         System.out.println("Promotion Offer has been cancelled.");
@@ -234,4 +254,3 @@ public class PayrollSystemMenu {
         }
     }
 }
-

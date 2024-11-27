@@ -55,11 +55,9 @@ public class PayrollSystem {
     public boolean adminCheck(String employeeId) {
         String position;
         boolean result = false;
-
         if (employeeCheck(employeeId)) {
             position = getEmployee(employeeId).getPosition();
-
-            if (position.contains("ADMINISTRATOR") || position.contains("SENIOR ADMINISTRATOR") || position.contains("EXECUTIVE ADMINISTRATOR") || position.contains("SENIOR EXECUTIVE ADMINISTRATOR") || position.contains("SENIOR ADMINISTRATIVE OFFICER I") || position.contains("SENIOR ADMINISTRATIVE OFFICER II") || position.contains("SENIOR ADMINISTRATIVE OFFICER III")) {
+            if (position.contains("ADMIN")) {
                 result = true;
             }
         }

@@ -16,6 +16,10 @@ public class FullTimeEmployee extends Employee {
         return reader.getSalaryScaleForPoint(getPosition(), salaryScale);
     }
 
+    public int getSalaryScale(){
+        return salaryScale;
+    }
+
     @Override
     public void createPayslip(){
         LocalDate date = LocalDate.now();
@@ -31,6 +35,8 @@ public class FullTimeEmployee extends Employee {
     public void permPromoteEmployee() {
         position = reader.getNewPosition();
         salaryScale = reader.getNewSalaryScale();
+        CSVWriterEmployee writer = new CSVWriterEmployee();
+        writer.updateEmployeeInCSV(getEmployeeId(), position, salaryScale);
     }
 
 

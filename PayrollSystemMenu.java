@@ -224,7 +224,6 @@ public class PayrollSystemMenu {
                                             FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(promotionId);
                                             employee.setPromotionOffer(true);
                                             employee.tempPromoteEmployee(salaryScale);
-                                            System.out.println("FULLTIME: " + employee.getPromotionOffer());
                                         }
 
                                         System.out.println("Promotion Offer has been sent to: " + payroll.getEmployee(promotionId).getName());

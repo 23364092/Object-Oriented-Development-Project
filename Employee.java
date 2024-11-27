@@ -4,7 +4,7 @@ import java.util.List;
 public abstract class Employee{
     private String employeeId;
     private String name;
-    private String position;
+    protected String position;
     private double salary;
     private PayslipSet payslips;
     private String dateOfEmployment;
@@ -70,10 +70,6 @@ public abstract class Employee{
         }
     }
 
-    public void permPromoteEmployee() {
-        position = reader.getNewPosition();
-        //salaryScale = reader.getNewSalaryScale();
-    }
 
     public void setPromotionOffer(boolean promotionOffer) {
         this.promotionOffer = promotionOffer;

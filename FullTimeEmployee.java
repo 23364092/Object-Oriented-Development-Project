@@ -13,7 +13,7 @@ public class FullTimeEmployee extends Employee {
 
     @Override
     public double getSalary() {
-       return reader.getSalaryScaleForPoint(getPosition(), salaryScale);
+        return reader.getSalaryScaleForPoint(getPosition(), salaryScale);
     }
 
     @Override
@@ -24,16 +24,23 @@ public class FullTimeEmployee extends Employee {
     }
 
     public void tempPromoteEmployee(int newSalaryScale) {
-        double newSalary = reader.getSalaryScaleForPoint(getPosition(), newSalaryScale);
+        double newSalary = reader.getNewSalary(getPosition(), newSalaryScale);
         System.out.println("Temporary Promotion: New Salary would be " + newSalary);
     }
+
+    public void permPromoteEmployee() {
+        position = reader.getNewPosition();
+        salaryScale = reader.getNewSalaryScale();
+    }
+
 
     @Override
     public String toString() {
         return "Full-Time Employee\n" +
                 "-----------------\n" +
                 super.toString() +
-                "\nScale Point: " + salaryScale +
+                "\nSalary: " + getSalary() + "\n" +
+                "Scale Point: " + salaryScale +
                 "\n-----------------\n" + "\n\n";
     }
 }

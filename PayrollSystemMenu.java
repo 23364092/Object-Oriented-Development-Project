@@ -124,7 +124,7 @@ public class PayrollSystemMenu {
                                 System.out.println(employee.promotionString());
 
                                 System.out.println("Would you like to accept new promotion : Y)es   N)o");
-                                command = input.nextLine();
+                                command = input.nextLine().toUpperCase();
 
                                 if (command.equals("Y")) {
                                     employee.permPromoteEmployee();
@@ -152,26 +152,12 @@ public class PayrollSystemMenu {
                         } else if (payroll.getEmployee(employeeId).getContractType().equals("PARTTIME")) {
                             PartTimeEmployee employee = (PartTimeEmployee) payroll.getEmployee(employeeId);
 
-                            if (payroll.getEmployee(employeeId).getPromotionOffer()) {
-                                System.out.println("You have received a promotion offer");
-                                System.out.println(employee.promotionString());
-
-                                System.out.println("Would you like to accept new promotion : Y)es   N)o");
-                                command = input.nextLine();
-
-                                if (command.equals("Y")) {
-                                    employee.permPromoteEmployee();
-                                    employee.setPromotionOffer(false);
-                                } else if (command.equals("N")) {
-                                    employee.setPromotionOffer(false);
-                                }
-                            }
                             boolean employeeMenu = true;
 
                             while (employeeMenu) {
                                 System.out.print("S)how most recent payslip   E)mployee Details   P)ayslip History");
                                 if (employee.getRecentPayslip().getDate().getDayOfMonth() < LocalDate.now().getMonthValue() || employee.getRecentPayslip().getDate().getDayOfMonth() < LocalDate.now().getYear()) {
-                                        System.out.print("  SU)bmit Claim");
+                                    System.out.print("  SU)bmit Claim");
                                 }
                                 System.out.println("   Q)uit");
                                 command = input.nextLine().toUpperCase();

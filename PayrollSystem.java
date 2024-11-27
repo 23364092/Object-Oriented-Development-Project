@@ -105,7 +105,7 @@ public class PayrollSystem {
         if (employee.getContractType().equals("PARTTIME")) {
             employee.setHoursWorked(hoursWorked);
         }
-       // employee.payClaim(employeeId);
+        // employee.payClaim(employeeId);
     }
 
     public boolean hrPasswordCheck(String otherPassword) {

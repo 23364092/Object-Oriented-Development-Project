@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class SalaryScaleReader {
-    private String filePath = "src/SalaryScale.csv";
+    private String filePath = "Project/src/SalaryScale";
     private double salary = -1;
     private String line;
     private String newPosition;
@@ -55,11 +55,10 @@ public class SalaryScaleReader {
     // If salary scale doesnt exist in current position the current position needs to change to the new position category and set the salary scale to the first in that position category
     public double getNewSalary(String position, int newSalaryScale) {
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
-            this.newSalaryScale = newSalaryScale;
             line = br.readLine();
 
             while (line != null) {
+                line = br.readLine();
                 line = line.trim();
 
                 if (line.isEmpty()) {
@@ -74,6 +73,7 @@ public class SalaryScaleReader {
                     String promotionPosition = data[3].trim();
                     if (currentPosition.equals(position) && scalePoint == newSalaryScale) {
                         try {
+                            System.out.println(currentPosition);
                             salary = Double.parseDouble(data[2].trim());
                             newPosition = currentPosition;
                             this.newSalaryScale = newSalaryScale;
@@ -81,10 +81,11 @@ public class SalaryScaleReader {
                         } catch (NumberFormatException e) {
                             System.err.println("Number format problem");
                         }
-                    } else if (currentPosition.equals(position) && !promotionPosition.equals(" ")) {
-                        currentPosition = promotionPosition;
-                        newSalaryScale = 1;
-                        salary = getSalaryScaleForPoint(currentPosition, newSalaryScale);
+                    } else if (currentPosition.equals(position) && !promotionPosition.equals("NULL")) {
+                        System.out.println(promotionPosition);
+                        newPosition = promotionPosition;
+                        this.newSalaryScale = 1;
+                        salary = getSalaryScaleForPoint(promotionPosition, this.newSalaryScale);
                         return salary;
                     }
                 }

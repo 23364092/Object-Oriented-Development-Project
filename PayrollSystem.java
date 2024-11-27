@@ -140,18 +140,18 @@ public class PayrollSystem {
         }
     }
     private void generateFullTimePayslip(FullTimeEmployee fullTime, LocalDate date) {
-    payslip slip = new payslip(
-        Integer.parseInt(fullTime.getEmployeeId()),
-        fullTime.getSalary(fullTime.getPosition(), fullTime.getSalaryScale()),
-        0, date.getDayOfMonth(), date.getMonthValue(), date.getYear());
-    fullTime.addPayslip(slip);
+        Payslip slip = new Payslip(
+                fullTime.getEmployeeId(),
+                fullTime.getSalary(fullTime.getPosition(), fullTime.getSalaryScale()),
+                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        fullTime.getPayslipSet().addPayslip(slip);
     }
+
     private void generatePartTimePayslip(PartTimeEmployee partTime, LocalDate date) {
-    payslip slip = new payslip(
-        Integer.parseInt(partTime.getEmployeeId()),
-        partTime.getHourlyRate(partTime.getPosition(), partTime.getSalaryScale()),
-        partTime.getClaimedHours(),
-        date.getDayOfMonth(), date.getMonthValue(), date.getYear());
-    partTime.addPayslip(slip);
+        Payslip slip = new Payslip(
+                partTime.getEmployeeId(),
+                partTime.getHourlyRate(partTime.getPosition(), partTime.getSalaryScale()),
+                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        partTime.getPayslipSet().addPayslip(slip);
 }
 }

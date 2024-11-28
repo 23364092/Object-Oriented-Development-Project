@@ -15,18 +15,44 @@ public class PayrollSystem {
         employees = new ArrayList<>();
         populateEmployeesFromCSV();
         autoAddPayslips();
+        autoPromoteEmployees();
     }
 
     public ArrayList<Employee> getEmployees() {
         return employees;
     }
-
     public void autoAddPayslips(){
         LocalDate date = LocalDate.now();
         if (date.getDayOfMonth() == 25) {
             for (Employee employee : employees) {
                 if (employee.getContractType().equals("FULLTIME")) {
                     employee.addPayslip(new Payslip(employee.getEmployeeId(), employee.getSalary(), date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
+                }
+            }
+        }
+    }
+
+    public void autoPromoteEmployees() {
+        int month = LocalDate.now().getMonthValue();
+
+        if (month == 11) {
+            for (Employee employee : employees) {
+                if (employee.getContractType().equals("FULLTIME")) {
+                    FullTimeEmployee ftEmployee = (FullTimeEmployee) employee;
+                    if  (ftEmployee.getPromotion().equals("TRUE")) {
+                        ftEmployee.tempPromoteEmployee(ftEmployee.getSalaryScale() + 1);
+                        ftEmployee.permPromoteEmployee();
+                        String promotion = "FALSE";
+                        ftEmployee.setPromotion(promotion);
+                    }
+                }
+            }
+        }
+        if (month != 10) {
+            for (Employee employee : employees) {
+                if (employee.getContractType().equals("FULLTIME")) {
+                    String promotion = "TRUE";
+                    ((FullTimeEmployee) employee).setPromotion(promotion);
                 }
             }
         }
@@ -57,8 +83,10 @@ public class PayrollSystem {
     public boolean adminCheck(String employeeId) {
         String position;
         boolean result = false;
+
         if (employeeCheck(employeeId)) {
             position = getEmployee(employeeId).getPosition();
+
             if (position.contains("ADMIN")) {
                 result = true;
             }
@@ -88,6 +116,14 @@ public class PayrollSystem {
         } else {
             return false;
         }
+    }
+
+    public void submitPayClaim(String employeeId, int hoursWorked){
+        PartTimeEmployee employee = (PartTimeEmployee) getEmployee(employeeId);
+        if (employee.getContractType().equals("PARTTIME")) {
+            employee.setHoursWorked(hoursWorked);
+        }
+        // employee.payClaim(employeeId);
     }
 
     public boolean hrPasswordCheck(String otherPassword) {

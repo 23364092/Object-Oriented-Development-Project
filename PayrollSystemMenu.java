@@ -79,12 +79,21 @@ public class PayrollSystemMenu {
                                         newHourlyRate = Double.parseDouble(input.nextLine());
                                     }
 
-                                    System.out.println("Enter Date Of Employment: ");
+                                    System.out.println("Enter Date Of Employment: yyyy-mm-dd");
                                     String newDateOfEmployment = input.nextLine();
+
+                                    String[] date = newDateOfEmployment.split("-");
+                                    int yearOfEmployment = Integer.parseInt(date[0].trim());
+                                    String promotion;
+                                    if (yearOfEmployment == LocalDate.now().getYear()) {
+                                        promotion = "FALSE";
+                                    } else {
+                                        promotion = "TRUE";
+                                    }
 
                                     Employee newEmployee;
                                     if (newContractType == 1) {
-                                        newEmployee = new FullTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, "FULLTIME");
+                                        newEmployee = new FullTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, "FULLTIME", promotion, 0);
                                     } else if (newContractType == 2) {
                                         newEmployee = new PartTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newHourlyRate, newDateOfEmployment, "PARTTIME");
                                     } else {
@@ -222,6 +231,7 @@ public class PayrollSystemMenu {
                                             FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(promotionId);
                                             employee.setPromotionOffer(true);
                                             employee.tempPromoteEmployee(salaryScale);
+                                            System.out.println("FULLTIME: " + employee.getPromotionOffer());
                                         }
 
                                         System.out.println("Promotion Offer has been sent to: " + payroll.getEmployee(promotionId).getName());

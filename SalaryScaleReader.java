@@ -5,11 +5,12 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class SalaryScaleReader {
-    private String filePath = "src/SalaryScale.csv";
+    private String filePath = "Project/src/SalaryScale";
     private double salary = -1;
     private String line;
     private String newPosition;
     private int newSalaryScale;
+    private int topPromotionCounter;
 
     public SalaryScaleReader() {
     }
@@ -45,7 +46,7 @@ public class SalaryScaleReader {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading the csv file.");
+            System.err.println("Error reading the csv file");
         }
         return salary;
     }
@@ -53,7 +54,7 @@ public class SalaryScaleReader {
 
     // Find position of new salary scale within same position if new salary scale exists in the employees current position
     // If salary scale doesnt exist in current position the current position needs to change to the new position category and set the salary scale to the first in that position category
-    public double getNewSalary(String position, int newSalaryScale) {
+    public double getNewSalary(String position, int newSalaryScale, int topPromotionCounter) {
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             line = br.readLine();
 
@@ -82,16 +83,21 @@ public class SalaryScaleReader {
                             System.err.println("Number format problem");
                         }
                     } else if (currentPosition.equals(position) && !promotionPosition.equals("NULL")) {
-                        System.out.println(promotionPosition);
-                        newPosition = promotionPosition;
-                        this.newSalaryScale = 1;
-                        salary = getSalaryScaleForPoint(promotionPosition, this.newSalaryScale);
-                        return salary;
+                        if (topPromotionCounter == 3) {
+                            System.out.println(promotionPosition);
+                            this.topPromotionCounter = 0;
+                            newPosition = promotionPosition;
+                            this.newSalaryScale = 1;
+                            salary = getSalaryScaleForPoint(promotionPosition, this.newSalaryScale);
+                            return salary;
+                        } else {
+                            this.topPromotionCounter = topPromotionCounter + 1;
+                        }
                     }
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading the csv file...");
+            System.err.println("Error reading the csv file");
         }
         return salary;
     }
@@ -102,5 +108,9 @@ public class SalaryScaleReader {
 
     public int getNewSalaryScale() {
         return newSalaryScale;
+    }
+
+    public int getTopPromotionCounter() {
+        return topPromotionCounter;
     }
 }

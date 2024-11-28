@@ -56,6 +56,7 @@ public abstract class Employee{
         return payslips.getRecentPayslip();
     }
 
+
     public abstract void createPayslip();
 
     public void printAllPayslips() {

@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class CSVReaderEmployee {
-    private final String filePath = "src/Employees.csv";
+    private final String filePath = "Project/src/Employees.csv";
 
     // Constructor
     public CSVReaderEmployee() {
@@ -15,7 +15,7 @@ public class CSVReaderEmployee {
             String line = br.readLine(); // Skip the header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length != 6) { // Ensure row has the correct number of columns
+                if (data.length != 8) { // Ensure row has the correct number of columns
                     System.err.println("Skipping malformed line: " + line);
                     continue;
                 }
@@ -26,12 +26,13 @@ public class CSVReaderEmployee {
                     String position = data[2].trim();
                     String dateOfEmployment = data[4].trim();
                     String contractType = data[5].trim().toUpperCase();
+                    String promotion = data[6].trim().toUpperCase();
+                    int topCounter = Integer.parseInt(data[7].trim().toUpperCase());
 
                     if (contractType.equals("FULLTIME")) {
                         int salaryScale = Integer.parseInt(data[3].trim());
                         payrollSystem.addEmployee(new FullTimeEmployee(
-                                employeeId, name, position, salaryScale, dateOfEmployment, contractType
-                        ));
+                                employeeId, name, position, salaryScale, dateOfEmployment, contractType, promotion, topCounter));
                     } else if (contractType.equals("PARTTIME")) {
                         double hourlyRate = Double.parseDouble(data[3].trim());
                         payrollSystem.addEmployee(new PartTimeEmployee(

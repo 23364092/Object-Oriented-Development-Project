@@ -48,7 +48,7 @@ public class CSVWriterEmployee {
         return false;
     }
 
-    public void updateEmployeeInCSV(String employeeId, String newPosition, int newSalaryScale) {
+    public void updateEmployeeInCSV(String employeeId, String newPosition, int newSalaryScale, String promotion, int topCounter) {
         List<String> lines = new ArrayList<>();
         boolean isUpdated = false;
 
@@ -61,6 +61,12 @@ public class CSVWriterEmployee {
                     tokens[2] = newPosition;
                     if (tokens.length > 3) {
                         tokens[3] = String.valueOf(newSalaryScale);
+                    }
+                    if (!tokens[6].equals(promotion)) {
+                        tokens[6] = promotion;
+                    }
+                    if (Integer.parseInt(tokens[7]) != topCounter) {
+                        tokens[7] = String.valueOf(topCounter);
                     }
                     line = String.join(",", tokens); // Reconstruct the line
                     isUpdated = true;

@@ -37,7 +37,7 @@ public class FullTimeEmployee extends Employee {
         salaryScale = reader.getNewSalaryScale();
         topPromotionCounter = reader.getTopPromotionCounter();
         CSVWriterEmployee writer = new CSVWriterEmployee();
-        writer.updateEmployeeInCSV(getEmployeeId(), position, salaryScale);// topPromotionCounter);
+        writer.updateEmployeeInCSV(getEmployeeId(), position, salaryScale, promotion, topPromotionCounter);
     }
 
     public int getSalaryScale() {

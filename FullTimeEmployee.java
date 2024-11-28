@@ -20,6 +20,10 @@ public class FullTimeEmployee extends Employee {
         return reader.getSalaryScaleForPoint(getPosition(), salaryScale);
     }
 
+    public int getTopPromotionCounter() {
+        return topPromotionCounter;
+    }
+
     @Override
     public void createPayslip(){
         LocalDate date = LocalDate.now();

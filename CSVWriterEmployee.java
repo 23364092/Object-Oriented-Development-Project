@@ -21,11 +21,16 @@ public class CSVWriterEmployee {
             }
             employeeEntry += "," + emp.getDateOfEmployment() + "," +
                             emp.getContractType().toUpperCase();
-
+            if (emp instanceof FullTimeEmployee) {
+                FullTimeEmployee fullTime = (FullTimeEmployee) emp;
+                employeeEntry += "," + fullTime.getPromotion() + ","
+                                + fullTime.getTopPromotionCounter();
+            } else if (emp instanceof PartTimeEmployee) {
+                employeeEntry += ",NULL,0";
+            }
 
             if (!isDuplicateEmployee(employeeEntry)) {
-                writer.println(employeeEntry); // Write the entry to the file
-                System.out.println("Employee successfully added.");
+                writer.println(employeeEntry);
             } else {
                 System.out.println("Duplicate employee entry detected. No data added.");
             }
@@ -82,7 +87,6 @@ public class CSVWriterEmployee {
                 for (String updatedLine : lines) {
                     writer.println(updatedLine);
                 }
-                System.out.println("Employee details successfully updated.");
             } catch (IOException e) {
                 System.err.println("Error writing to file: " + e.getMessage());
             }

@@ -1,6 +1,4 @@
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class PartTimeEmployee extends Employee {
     private double hourlyRate;

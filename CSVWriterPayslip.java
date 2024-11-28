@@ -11,8 +11,7 @@ public class CSVWriterPayslip {
             String payslipEntry = p.getEmployee_id() + "," +
                     p.getAnnualSalary() + "," +
                     p.getDate().getYear() + "," +
-                    p.getDate().getMonthValue() + "," +
-                    p.getDate().getDayOfMonth();
+                    p.getDate().getMonthValue() + ",25";
 
             // Check if the payslip already exists in the file
             if (!isDuplicatePayslip(payslipEntry)) {

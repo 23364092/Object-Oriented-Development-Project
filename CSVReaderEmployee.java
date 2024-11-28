@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class CSVReaderEmployee {
-    private final String filePath = "Project/src/Employees.csv";
+    private final String filePath = "src/Employees.csv";
 
     // Constructor
     public CSVReaderEmployee() {
@@ -15,8 +15,7 @@ public class CSVReaderEmployee {
             String line = br.readLine(); // Skip the header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length != 8) { // Ensure row has the correct number of columns
-                    System.err.println("Skipping malformed line: " + line);
+                if (data.length != 8) {
                     continue;
                 }
 
@@ -38,8 +37,6 @@ public class CSVReaderEmployee {
                         payrollSystem.addEmployee(new PartTimeEmployee(
                                 employeeId, name, position, hourlyRate, dateOfEmployment, contractType
                         ));
-                    } else {
-                        System.err.println("Unknown contract type for employee ID: " + employeeId);
                     }
                 } catch (NumberFormatException e) {
                     System.err.println("Error parsing number for line: " + line);

@@ -65,7 +65,6 @@ public class Deductions {
 
     public double calculateNettPay(double grossPay) {
         double totalTax = PAYE + USC + PRSI;
-        System.out.println(totalTax);
         return grossPay - ((totalTax + 80 + (grossPay * 0.008))) ;
         /**
          * €80 a month for health insurance

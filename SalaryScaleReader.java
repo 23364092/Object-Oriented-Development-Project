@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 
 public class SalaryScaleReader {
-    private String filePath = "Project/src/SalaryScale";
+    private String filePath = "src/SalaryScale.csv";
     private double salary = -1;
     private String line;
     private String newPosition;
@@ -40,7 +40,7 @@ public class SalaryScaleReader {
                                 break;
                             }
                         } catch (NumberFormatException e) {
-                            System.err.println("Number format problem");
+                            System.err.println("Number format problem.");
                         }
                     }
                 }

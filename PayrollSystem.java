@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.DayOfWeek;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class PayrollSystem {
     public void autoPromoteEmployees() {
         int month = LocalDate.now().getMonthValue();
 
-        if (month == 11) {
+        if (month == 10) {
             for (Employee employee : employees) {
                 if (employee.getContractType().equals("FULLTIME")) {
                     FullTimeEmployee ftEmployee = (FullTimeEmployee) employee;
@@ -118,14 +116,6 @@ public class PayrollSystem {
         }
     }
 
-    public void submitPayClaim(String employeeId, int hoursWorked){
-        PartTimeEmployee employee = (PartTimeEmployee) getEmployee(employeeId);
-        if (employee.getContractType().equals("PARTTIME")) {
-            employee.setHoursWorked(hoursWorked);
-        }
-        // employee.payClaim(employeeId);
-    }
-
     public boolean hrPasswordCheck(String otherPassword) {
         if (otherPassword.equals(hrPassword)) {
             return true;
@@ -153,7 +143,6 @@ public class PayrollSystem {
     public StringBuilder getEmployeeIds() {
         StringBuilder s = new StringBuilder();
         for (Employee e : employees) {
-            System.out.println(employees.size());
             s.append(e.getEmployeeId()).append("\n");
         }
         return s;
@@ -171,7 +160,7 @@ public class PayrollSystem {
             System.out.println("The second friday of the month is: " + secondFriday);
             return true;
         } else {
-            System.out.println("You have missed the window to submit a payclaim for this month");
+            System.out.println("You have missed the window to submit a pay claim for this month.");
             return false;
         }
     }

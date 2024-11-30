@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.io.IOException;
 
 public class PayrollSystemMenu {
 
@@ -27,38 +26,29 @@ public class PayrollSystemMenu {
             }
 
             if (command.equals("A")) {
-                Boolean valid = false;
-
-                while (!valid) {
+                while (true) {
                     System.out.println("Q)uit\nInput employee Id: ");
                     employeeId = input.nextLine().toUpperCase();
 
                     // Check for "Q" to quit
-                    if (employeeId.equalsIgnoreCase("Q")) {
-                        return; // Go back to the main menu
-                    }
+                    if (employeeId.equalsIgnoreCase("Q")) break; // Go back to the main menu
 
                     if (payroll.adminCheck(employeeId)) {
-                        valid = true;
+                        break;
                     } else {
                         System.err.println("Warning: Employee does not have admin privileges or is not found.");
                     }
                 }
 
                 if (payroll.adminCheck(employeeId)) {
-                    valid = false;
-
-                    while (!valid) {
+                    while (true) {
                         System.out.println("Q)uit\nInput password: ");
                         password = input.nextLine().toUpperCase();
 
                         // Check for "Q" to quit
-                        if (password.equalsIgnoreCase("Q")) {
-                            return; // Go back to the main menu
-                        }
-
+                        if (password.equalsIgnoreCase("Q")) break; // Go back to the main menu
                         if (payroll.adminPasswordCheck(password)) {
-                            valid = true;
+                            break;
                         } else {
                             System.err.println("Incorrect password, please try again.");
                         }
@@ -80,13 +70,13 @@ public class PayrollSystemMenu {
                             } else if (command.equals("A")) {
                                 System.out.println("Input Employee Details.\n");
                                 String newEmployeeId = "";
-                                valid = false;
+                                //valid = false;
 
                                 while (true) {
                                     System.out.println("Press 'Q' to quit at any time.");
 
                                     // Get Employee ID
-                                    while (!valid) {
+                                    while (true) {
                                         System.out.println("Enter Employee Id: ");
                                         newEmployeeId = input.nextLine();
 
@@ -96,7 +86,7 @@ public class PayrollSystemMenu {
                                         }
 
                                         if (!payroll.employeeCheck(newEmployeeId)) {
-                                            valid = true;
+                                            break;
                                         } else {
                                             System.err.println("Warning: Employee with ID " + newEmployeeId + " already exists.");
                                         }
@@ -127,15 +117,14 @@ public class PayrollSystemMenu {
                                     double newHourlyRate = 0;
 
                                     if (newContractType == 1) {
-                                        valid = false;
                                         String scaleInput = "";
-                                        while (!valid) {
+                                        while (true) {
                                             System.out.println("Enter Employee Salary Scale: ");
                                             try {
                                                 scaleInput = input.nextLine();
                                                 if (scaleInput.equalsIgnoreCase("Q")) break;
                                                 newSalaryScale = Integer.parseInt(scaleInput);
-                                                valid = true;
+                                                break;
                                             } catch (NumberFormatException e) {
                                                 System.err.println("Invalid argument: Input must be a number.");
                                             }
@@ -152,8 +141,7 @@ public class PayrollSystemMenu {
                                     String promotion = "";
 
                                     // Get Date of Employment
-                                    valid = false;
-                                    while (!valid) {
+                                    while (true) {
                                         System.out.println("Enter Date Of Employment: yyyy-mm-dd");
                                         newDateOfEmployment = input.nextLine();
                                         if (newDateOfEmployment.equalsIgnoreCase("Q")) break;
@@ -162,7 +150,7 @@ public class PayrollSystemMenu {
                                         try {
                                             int yearOfEmployment = Integer.parseInt(date[0].trim());
                                             promotion = (yearOfEmployment == LocalDate.now().getYear()) ? "FALSE" : "TRUE";
-                                            valid = true;
+                                            break;
                                         } catch (IllegalArgumentException e) {
                                             System.err.println("Input a valid date.");
                                         }
@@ -170,7 +158,7 @@ public class PayrollSystemMenu {
 
                                     if (newDateOfEmployment.equalsIgnoreCase("Q")) break;
 
-                                    if (valid) {
+                                    if (true) {
                                         Employee newEmployee;
                                         if (newContractType == 1) {
                                             newEmployee = new FullTimeEmployee(newEmployeeId, newEmployeeName, newEmployeePosition, newSalaryScale, newDateOfEmployment, "FULLTIME", promotion, 0);
@@ -360,12 +348,13 @@ public class PayrollSystemMenu {
                                                     FullTimeEmployee employee = (FullTimeEmployee) payroll.getEmployee(promotionId);
                                                     employee.setPromotionOffer(true);
                                                     employee.tempPromoteEmployee(salaryScale);
-                                                    System.out.println("FULLTIME: " + employee.getPromotionOffer());
                                                 }
 
                                                 System.out.println("Promotion Offer has been sent to: " + payroll.getEmployee(promotionId).getName());
+                                                break;
                                             } else if (command.equals("N")) {
                                                 System.out.println("Promotion Offer has been cancelled.");
+                                                break;
                                             }
                                         }
                                     }

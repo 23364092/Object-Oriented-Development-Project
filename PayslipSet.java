@@ -11,8 +11,6 @@ public class PayslipSet {
         Collections.sort(payslips);
     }
 
-    public void removeAllPayslips(){ payslips.clear(); }
-
     public ArrayList<Payslip> getPayslips(){ return payslips; }
 
     public Payslip getRecentPayslip(){ return payslips.getLast(); }

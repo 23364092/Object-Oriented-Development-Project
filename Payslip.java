@@ -23,19 +23,6 @@ public class Payslip implements Comparable<Payslip>{
         return date;
     }
 
-    /**
-     * Uses tax class to calculate nett pay for given salary
-     * @return nettPay
-     */
-    public double getNettPay(){
-        Deductions d = new Deductions(this);
-        return d.calculateNettPay(this.getAnnualSalary());
-    }
-
-    public int getMonth(){
-        return date.getMonthValue();
-    }
-
     @Override
     public String toString(){
         Deductions d = new Deductions(this);
